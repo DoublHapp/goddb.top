@@ -1,5 +1,6 @@
 import type { Post, Profile, Project } from '@/types/content'
 export { tools } from './tools'
+export { dbverseEntries } from './dbverse'
 import contentSystemEn from './posts/designing-content-systems.en.md?raw'
 import contentSystemZh from './posts/designing-content-systems.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'

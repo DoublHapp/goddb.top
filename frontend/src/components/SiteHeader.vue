@@ -16,6 +16,7 @@ const navItems = [
   { path: '/', key: 'home', weak: false },
   { path: '/tools', key: 'tools', weak: false },
   { path: '/essays', key: 'blog', weak: false },
+  { path: '/dbverse', key: 'dbverse', weak: true },
   { path: '/projects', key: 'projects', weak: true },
   { path: '/about', key: 'about', weak: true },
 ] as const

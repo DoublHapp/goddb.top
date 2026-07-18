@@ -57,3 +57,36 @@ export interface Post {
   readingTime: number
   content: LocalizedText
 }
+
+export type DbverseSection = 'games' | 'books' | 'anime' | 'screening' | 'resources' | 'rants'
+export type DbverseMood = 'obsessed' | 'broken' | 'hilarious' | 'melancholy' | 'chaotic'
+export type DbverseStatus = 'awaiting-content' | 'published'
+
+export interface DbverseMedia {
+  platform: 'bilibili' | 'youtube'
+  videoId: string
+  title?: LocalizedText
+}
+
+export interface DbverseResource {
+  label: LocalizedText
+  url: string
+  source: string
+  license: string
+}
+
+export interface DbverseEntry {
+  slug: string
+  title: LocalizedText
+  excerpt: LocalizedText
+  section: DbverseSection
+  moods: DbverseMood[]
+  tags: string[]
+  status: DbverseStatus
+  accent: string
+  publishedAt?: string
+  content: { 'zh-CN': string; en?: string }
+  media?: DbverseMedia
+  resources?: DbverseResource[]
+  featured: boolean
+}

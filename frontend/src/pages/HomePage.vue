@@ -36,6 +36,12 @@ useSeo(() => locale.value === 'zh-CN' ? 'DB 的线上工作台' : 'DB’s workbe
       <div class="post-list"><PostRow v-for="post in posts" :key="post.slug" :post="post" /></div>
     </section>
 
+    <RouterLink to="/dbverse" class="worldline-banner shell">
+      <div><span class="eyebrow">{{ t.dbverse.eyebrow }}</span><h2>{{ t.dbverse.bannerTitle }}</h2><p>{{ t.dbverse.bannerDescription }}</p></div>
+      <span class="worldline-cta">{{ t.dbverse.enter }} <ArrowUpRight :size="18" /></span>
+      <div class="worldline-track" aria-hidden="true"><span>P5R · 红楼梦 · JOJO · GAME CUTS · RESOURCES · RANTS · </span><span>P5R · 红楼梦 · JOJO · GAME CUTS · RESOURCES · RANTS · </span></div>
+    </RouterLink>
+
     <nav class="home-secondary shell" aria-label="Secondary navigation">
       <RouterLink to="/projects">{{ t.nav.projects }} <ArrowUpRight :size="15" /></RouterLink>
       <RouterLink to="/about">{{ t.nav.about }} <ArrowUpRight :size="15" /></RouterLink>

@@ -18,6 +18,9 @@ const { toggleFavorite, isFavorite } = useToolLibrary()
     <h3>{{ tool.name[locale] }}</h3>
     <p>{{ tool.summary[locale] }}</p>
     <ul class="tag-list"><li v-for="tag in tool.tags" :key="tag">{{ tag }}</li></ul>
-    <RouterLink :to="tool.route" class="card-link">{{ t.common.open }} <ArrowUpRight :size="16" /></RouterLink><span class="tool-status">{{ t.tools.statuses[tool.status] }}</span>
+    <footer class="tool-card-footer">
+      <span class="tool-status">{{ t.tools.statuses[tool.status] }}</span>
+      <RouterLink :to="tool.route" class="card-link">{{ t.common.open }}<ArrowUpRight :size="15" /></RouterLink>
+    </footer>
   </article>
 </template>
