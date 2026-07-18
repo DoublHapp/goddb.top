@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://goddb.top/</loc></url>
-  <url><loc>https://goddb.top/about</loc></url>
-  <url><loc>https://goddb.top/projects</loc></url>
-  <url><loc>https://goddb.top/projects/signal-console</loc></url>
-  <url><loc>https://goddb.top/projects/content-pipeline</loc></url>
-  <url><loc>https://goddb.top/projects/migration-lab</loc></url>
-  <url><loc>https://goddb.top/blog</loc></url>
-  <url><loc>https://goddb.top/blog/designing-content-systems</loc></url>
-  <url><loc>https://goddb.top/blog/vue-rendering-notes</loc></url>
+  <url><loc>https://goddb.top/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://goddb.top/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goddb.top/projects</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goddb.top/projects/signal-console</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goddb.top/projects/content-pipeline</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goddb.top/projects/migration-lab</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goddb.top/tools</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://goddb.top/tools/spark</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goddb.top/tools/palette</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goddb.top/tools/poster</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goddb.top/tools/motion</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goddb.top/essays</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://goddb.top/essays/designing-content-systems</loc><lastmod>2026-07-12</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goddb.top/essays/vue-rendering-notes</loc><lastmod>2026-06-28</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
 </urlset>

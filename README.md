@@ -1,8 +1,8 @@
 # goddb.top
 
-个人网站项目，采用单仓库双目录结构：
+DB 放小工具、随笔和一些不肯删掉的实验的地方。认真不是访问本站的前置条件，但项目维护说明仍然会认真写。项目采用单仓库双目录结构：
 
-- `frontend/`：Vue 3 + Vite + TypeScript + Element Plus 前端
+- `frontend/`：Vue 3 + Vite + TypeScript + Element Plus 网站前端
 - `backend/`：Spring Boot 后端预留说明，首版不部署
 
 ## 本地开发
@@ -22,13 +22,17 @@ npm run build
 
 Vercel 应将 Root Directory 设置为 `frontend`，通过 GitHub 推送自动部署。域名 `goddb.top` 与 `www.goddb.top` 在 Vercel 添加后，按 Vercel 给出的记录配置 Cloudflare DNS。
 
-## 内容维护
+## 内容结构
 
-项目内容位于 `frontend/src/content/projects/`，博客 Markdown 位于 `frontend/src/content/posts/`。真实个人信息、链接和文章可以替换示例内容，但不要提交平台令牌或其他敏感信息。
+网站以 Tools 与 Essays 组织主要公开内容。Tools 数据位于 `frontend/src/content/tools.ts`，公开路由为 `/tools`；每项工具通过 `subdomain` 声明独立子域名，主站保留 `/tools/:slug` 目录详情入口。Essays 正文位于 `frontend/src/content/posts/`，公开路由为 `/essays`。每篇文章通过 `kind` 区分 `daily`、`inspiration` 与 `technical`，现有文章均为 `technical`。项目与个人档案数据位于 `frontend/src/content/index.ts`，本地化界面文案位于 `frontend/src/locales/messages.ts`。
+
+新增工具或文章时同步维护 `frontend/public/sitemap.xml`。公开内容可以替换和扩展，但不要提交平台令牌、私钥或其他敏感信息。
 
 ## 主题与交互
 
-网站提供明暗双主题，首次访问跟随系统偏好，手动选择会被保存。项目页支持 `q` 和 `status` 查询参数，博客页支持 `q` 和 `category` 查询参数，筛选结果可以直接分享。
+网站提供中英双语与明暗双主题，首次访问跟随系统偏好，手动选择会被保存。工具收藏与最近访问分别使用 `goddb:favourite-tools` 和 `goddb:recent-tools`，存储值仅接受已登记工具的 slug。Essays 使用 `kind` 与 `q` 查询参数同步文章类型和搜索条件，`/blog` 及详情重定向时保留查询参数与 hash。文章代码和链接复制失败时会显示本地化反馈。
+
+首页 Canvas 在桌面端使用 70 个节点、移动端使用 28 个节点，DPR 上限为 2；页面不可见时暂停，启用 reduced motion 时降级为静态画面。
 
 ## 发布
 

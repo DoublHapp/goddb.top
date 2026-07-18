@@ -1,18 +1,19 @@
 import type { Post, Profile, Project } from '@/types/content'
+export { tools } from './tools'
 import contentSystemEn from './posts/designing-content-systems.en.md?raw'
 import contentSystemZh from './posts/designing-content-systems.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'
 import vueRendererZh from './posts/vue-rendering-notes.zh-CN.md?raw'
 
 export const profile: Profile = {
-  name: 'DoublHapp',
-  role: { 'zh-CN': '全栈开发者 / 系统构建者', en: 'Full-stack developer / System builder' },
+  name: 'DB',
+  role: { 'zh-CN': '业余脑洞维护员 / 偶尔写点能跑的东西', en: 'Part-time idea wrangler / occasional maker of things that run' },
   intro: {
-    'zh-CN': '关注复杂系统的清晰表达，在产品体验、前端架构与工程效率之间建立可靠连接。',
-    en: 'I turn complex systems into clear experiences, connecting product thinking, frontend architecture, and engineering efficiency.',
+    'zh-CN': '这里有一些替身般的小工具，还有 DB 没想明白就先写下来的随笔。放心，认真并不是访问本站的前置条件。',
+    en: 'There are Stand-like little tools here, plus essays DB wrote before figuring anything out. Serious thinking is strictly optional.',
   },
-  location: { 'zh-CN': '中国 · 远程协作', en: 'China · Remote friendly' },
-  availability: { 'zh-CN': '可交流新机会', en: 'Open to conversations' },
+  location: { 'zh-CN': '地球某处 · 偶尔在线', en: 'Somewhere on Earth · occasionally online' },
+  availability: { 'zh-CN': '欢迎投喂怪点子', en: 'Strange ideas welcome' },
   skills: ['Vue', 'TypeScript', 'Java', 'Spring Boot', 'Node.js', 'System Design'],
 }
 
@@ -78,6 +79,7 @@ export const posts: Post[] = [
       'zh-CN': '从稳定标识、构建时内容到双语上下文，建立可预测的个人网站内容工作流。',
       en: 'Stable identities, build-time content, and bilingual context for a predictable publishing workflow.',
     },
+    kind: 'technical',
     category: 'Architecture',
     tags: ['Content', 'i18n', 'DX'],
     publishedAt: '2026-07-12',
@@ -91,6 +93,7 @@ export const posts: Post[] = [
       'zh-CN': '用 VNode、patch 与标志位三条线索建立 Vue 运行时源码的阅读地图。',
       en: 'A practical map of Vue runtime internals through VNodes, patching, and compiler flags.',
     },
+    kind: 'technical',
     category: 'Vue Internals',
     tags: ['Vue', 'VNode', 'Runtime'],
     publishedAt: '2026-06-28',

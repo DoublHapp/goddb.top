@@ -1,0 +1,17 @@
+.playground { padding: 108px 0 16px; }
+.playground-shell { display: grid; grid-template-columns: .75fr 1.25fr; gap: 18px; align-items: stretch; }
+.playground-intro { display: flex; flex-direction: column; justify-content: space-between; padding: 28px; border: 1px solid var(--line); background: var(--panel); border-radius: 12px; }
+.playground-intro h2 { max-width: 360px; margin: 24px 0 18px; color: var(--heading); font-size: clamp(28px, 4vw, 48px); line-height: 1.05; letter-spacing: -.06em; }
+.playground-intro p { max-width: 390px; margin: 0; color: var(--muted); font-size: 13px; }
+.playground-meta { display: flex; justify-content: space-between; margin-top: 42px; padding-top: 14px; border-top: 1px solid var(--line-soft); color: var(--muted); font-size: 10px; letter-spacing: .08em; }
+.playground-meta strong { color: var(--accent); font-weight: 400; }
+.playground-canvas { position: relative; min-height: 390px; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 60%), var(--panel-strong); border-radius: 12px; }
+.playground-canvas::before { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, black, transparent); }
+.playground-canvas canvas { position: absolute; inset: 0; display: block; }
+.playground-canvas__readout, .playground-canvas__toggle { position: absolute; z-index: 1; font-size: 9px; letter-spacing: .1em; }
+.playground-canvas__readout { top: 18px; left: 20px; display: grid; gap: 4px; color: var(--muted); }
+.playground-canvas__readout strong { color: var(--accent); font-weight: 400; }
+.playground-canvas__toggle { right: 18px; bottom: 18px; padding: 7px 10px; color: var(--muted); border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
+.playground-canvas__toggle:hover { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 900px) { .playground-shell { grid-template-columns: 1fr; } .playground-intro { min-height: 300px; } }
+@media (max-width: 680px) { .playground { padding-top: 82px; } .playground-canvas { min-height: 300px; } .playground-intro { padding: 22px; } }

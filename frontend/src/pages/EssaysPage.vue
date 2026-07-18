@@ -6,39 +6,43 @@ import PostRow from '@/components/PostRow.vue'
 import { posts } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
+import type { PostKind } from '@/types/content'
 
 const { locale, t } = useLocale()
-const categories = computed(() => ['all', ...new Set(posts.map((post) => post.category))])
+const kinds = ['all', 'daily', 'inspiration', 'technical'] as const
+type Kind = typeof kinds[number]
 const route = useRoute()
 const router = useRouter()
-const readCategory = (value: unknown) => typeof value === 'string' && categories.value.includes(value) ? value : 'all'
+const readKind = (value: unknown): Kind => kinds.includes(value as Kind) ? value as Kind : 'all'
 const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
-const category = ref(readCategory(route.query.category))
+const kind = ref<Kind>(readKind(route.query.kind))
 const filteredPosts = computed(() => {
   const keyword = query.value.trim().toLocaleLowerCase()
   return posts.filter((post) => {
-    const matchesCategory = category.value === 'all' || post.category === category.value
-    const searchable = [post.title[locale.value], post.excerpt[locale.value], post.category, ...post.tags].join(' ').toLocaleLowerCase()
-    return matchesCategory && (!keyword || searchable.includes(keyword))
+    const matchesKind = kind.value === 'all' || post.kind === kind.value
+    const searchable = [post.title[locale.value], post.excerpt[locale.value], post.kind, post.category, ...post.tags].join(' ').toLocaleLowerCase()
+    return matchesKind && (!keyword || searchable.includes(keyword))
   })
 })
 const clearFilters = () => {
   query.value = ''
-  category.value = 'all'
+  kind.value = 'all'
 }
-watch([query, category], ([nextQuery, nextCategory]) => {
+watch([query, kind], ([nextQuery, nextKind]) => {
   const next = { ...route.query }
   if (nextQuery.trim()) next.q = nextQuery.trim()
   else delete next.q
-  if (nextCategory !== 'all') next.category = nextCategory
-  else delete next.category
+  if (nextKind !== 'all') next.kind = nextKind
+  else delete next.kind
+  delete next.category
   router.replace({ query: next })
 })
 watch(() => route.query, (next) => {
   query.value = typeof next.q === 'string' ? next.q : ''
-  category.value = readCategory(next.category)
+  kind.value = readKind(next.kind)
 })
-useSeo(() => t.value.nav.blog, () => t.value.blog.subtitle, '/blog')
+const kindLabel = (value: Kind) => value === 'all' ? t.value.blog.all : t.value.blog.kinds[value as PostKind]
+useSeo(() => t.value.nav.blog, () => t.value.blog.subtitle, '/essays')
 </script>
 
 <template>
@@ -47,11 +51,11 @@ useSeo(() => t.value.nav.blog, () => t.value.blog.subtitle, '/blog')
     <div class="page-lead"><h1>{{ t.blog.title }}<span class="accent">.</span></h1><p>{{ t.blog.subtitle }}</p></div>
     <div class="filter-workbench">
       <label class="search-field"><Search :size="17" /><span class="sr-only">{{ t.blog.search }}</span><input v-model="query" type="search" :placeholder="t.blog.search"></label>
-      <div class="filter-chips" :aria-label="t.blog.filter"><button v-for="item in categories" :key="item" type="button" :class="{ active: category === item }" @click="category = item">{{ item === 'all' ? t.blog.all : item }}</button></div>
-      <button v-if="query || category !== 'all'" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button>
+      <div class="filter-chips" :aria-label="t.blog.filter"><button v-for="item in kinds" :key="item" type="button" :class="{ active: kind === item }" @click="kind = item">{{ kindLabel(item) }}</button></div>
+      <button v-if="query || kind !== 'all'" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button>
     </div>
     <div class="log-count">{{ t.blog.all }} <span>{{ String(filteredPosts.length).padStart(2, '0') }} {{ t.blog.results }}</span></div>
     <TransitionGroup v-if="filteredPosts.length" name="row-list" tag="div" class="post-list"><PostRow v-for="post in filteredPosts" :key="post.slug" :post="post" /></TransitionGroup>
-    <div v-else class="empty-state"><Search :size="24" /><p>{{ t.projects.empty }}</p><button type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+    <div v-else class="empty-state"><Search :size="24" /><p>{{ t.blog.empty }}</p><button type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
   </section>
 </template>

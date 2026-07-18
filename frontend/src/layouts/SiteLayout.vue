@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
     <SiteHeader />
     <main>
       <RouterView v-slot="{ Component }">
-        <Transition name="page-shift" mode="out-in">
+        <Transition name="page-shift" mode="out-in" appear>
           <component :is="Component" :key="$route.fullPath" />
         </Transition>
       </RouterView>

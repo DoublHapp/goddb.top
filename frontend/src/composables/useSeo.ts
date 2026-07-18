@@ -12,7 +12,7 @@ export function useSeo(title: MaybeRefOrGetter<string>, description: MaybeRefOrG
   const { locale } = useLocale()
 
   watchEffect(() => {
-    const currentTitle = `${toValue(title)} · DoublHapp`
+    const currentTitle = `${toValue(title)} · DB`
     const currentDescription = toValue(description)
     const canonical = `${siteUrl}${toValue(path)}`
     document.title = currentTitle

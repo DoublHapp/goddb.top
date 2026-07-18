@@ -1,6 +1,8 @@
 # goddb.top 前端
 
-Vue 3 + TypeScript + Vite + Vue Router + Element Plus 的双语个人网站前端。
+goddb.top 是 DB 放小工具、随笔和一些不肯删掉的实验的地方。本目录包含由 Vue 3、TypeScript、Vite、Vue Router 与 Element Plus 构建的双语前端。
+
+GitHub：https://github.com/DoublHapp/goddb.top
 
 ## 命令
 
@@ -12,12 +14,21 @@ npm run check
 npm run build
 ```
 
-## 内容
+## 内容与路由
 
-- 项目数据：`src/content/index.ts`
-- 博客 Markdown：`src/content/posts/`
+- Tools 数据：`src/content/tools.ts`，公开路由为 `/tools`
+- Essays Markdown：`src/content/posts/`，元数据定义于 `src/content/index.ts`，公开路由为 `/essays`
+- 项目与档案数据：`src/content/index.ts`
+- 中英文本地化：`src/locales/messages.ts`
 - 页面：`src/pages/`
 - 主题和全局交互：`src/composables/` 与 `src/style.css`
+- SEO 基础：`index.html`、`public/sitemap.xml` 与 `public/robots.txt`
+
+Post 的 `kind` 为 `daily | inspiration | technical`，现有文章使用 `technical`。Essays 通过 `kind` 与 `q` 查询参数同步筛选状态；`/blog` 及其文章地址重定向至 `/essays` 时保留 query 与 hash。剪贴板操作提供完整的中英文成功和失败反馈。新增公开内容时需要同步更新 sitemap。
+
+每项工具在 `subdomain` 字段声明独立子域名，主站 `/tools/:slug` 提供目录与详情入口。收藏和最近访问分别保存到 `goddb:favourite-tools` 与 `goddb:recent-tools`，读取与写入仅接受工具数据中存在的 slug。
+
+Canvas 在桌面端绘制 70 个节点、移动端绘制 28 个节点，设备像素比最高取 2。页面不可见时暂停动画；系统启用 reduced motion 时保留静态画面，不启动连续帧循环。
 
 ## Vercel
 

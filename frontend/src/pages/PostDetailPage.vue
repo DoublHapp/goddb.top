@@ -14,12 +14,22 @@ const body = computed(() => post.value ? renderMarkdown(post.value.content[local
 const article = ref<HTMLElement>()
 const progress = ref(0)
 const linkCopied = ref(false)
+const linkCopyFailed = ref(false)
 const copyApps: ReturnType<typeof createApp>[] = []
 
 const copyLink = async () => {
-  await navigator.clipboard.writeText(window.location.href)
-  linkCopied.value = true
-  window.setTimeout(() => { linkCopied.value = false }, 1600)
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    linkCopied.value = true
+    linkCopyFailed.value = false
+  } catch {
+    linkCopied.value = false
+    linkCopyFailed.value = true
+  }
+  window.setTimeout(() => {
+    linkCopied.value = false
+    linkCopyFailed.value = false
+  }, 1600)
 }
 
 const updateProgress = () => {
@@ -37,13 +47,23 @@ const bindCopyButtons = async () => {
     mount.className = 'copy-mount'
     pre.appendChild(mount)
     const copied = ref(false)
+    const copyFailed = ref(false)
     const copy = async () => {
-      await navigator.clipboard.writeText(pre.querySelector('code')?.textContent ?? '')
-      copied.value = true
-      window.setTimeout(() => { copied.value = false }, 1600)
+      try {
+        await navigator.clipboard.writeText(pre.querySelector('code')?.textContent ?? '')
+        copied.value = true
+        copyFailed.value = false
+      } catch {
+        copied.value = false
+        copyFailed.value = true
+      }
+      window.setTimeout(() => {
+        copied.value = false
+        copyFailed.value = false
+      }, 1600)
     }
     const app = createApp({
-      setup: () => () => h('button', { class: 'copy-button', type: 'button', title: copied.value ? t.value.common.copied : t.value.common.copy, onClick: copy }, [h(copied.value ? Check : Copy, { size: 14 }), h('span', copied.value ? t.value.common.copied : t.value.common.copy)]),
+      setup: () => () => h('button', { class: 'copy-button', type: 'button', title: copyFailed.value ? t.value.common.copyFailed : copied.value ? t.value.common.copied : t.value.common.copy, onClick: copy }, [h(copied.value ? Check : Copy, { size: 14 }), h('span', copyFailed.value ? t.value.common.copyFailed : copied.value ? t.value.common.copied : t.value.common.copy)]),
     })
     app.mount(mount)
     copyApps.push(app)
@@ -68,9 +88,9 @@ useSeo(() => post.value?.title[locale.value] ?? '404', () => post.value?.excerpt
 <template>
   <section v-if="post" ref="article" class="page shell article-page">
     <div class="reading-progress" aria-hidden="true"><span :style="{ transform: `scaleX(${progress / 100})` }"></span></div>
-    <RouterLink to="/blog" class="back-link"><ArrowLeft :size="16" />{{ t.common.back }}</RouterLink>
-    <header class="article-header"><div class="post-meta"><span>{{ post.category }}</span><span>{{ post.readingTime }} {{ t.common.min }}</span></div><h1>{{ post.title[locale] }}</h1><p>{{ post.excerpt[locale] }}</p><div class="article-footer"><div class="post-tags"><span v-for="tag in post.tags" :key="tag">#{{ tag }}</span></div><button class="copy-link" type="button" @click="copyLink"><Check v-if="linkCopied" :size="15" /><Link2 v-else :size="15" />{{ linkCopied ? t.common.linkCopied : t.common.copyLink }}</button></div></header>
+    <RouterLink to="/essays" class="back-link"><ArrowLeft :size="16" />{{ t.common.back }}</RouterLink>
+    <header class="article-header"><div class="post-meta"><span>{{ t.blog.kinds[post.kind] }}</span><span>{{ post.category }}</span><span>{{ post.readingTime }} {{ t.common.min }}</span></div><h1>{{ post.title[locale] }}</h1><p>{{ post.excerpt[locale] }}</p><div class="article-footer"><div class="post-tags"><span v-for="tag in post.tags" :key="tag">#{{ tag }}</span></div><button class="copy-link" type="button" @click="copyLink"><Check v-if="linkCopied" :size="15" /><Link2 v-else :size="15" />{{ linkCopyFailed ? t.common.copyFailed : linkCopied ? t.common.linkCopied : t.common.copyLink }}</button></div></header>
     <article class="markdown-body" v-html="body"></article>
   </section>
-  <section v-else class="page shell not-found"><p class="eyebrow">{{ t.notFound.code }}</p><h1>{{ t.notFound.title }}</h1><RouterLink to="/blog" class="primary-button">{{ t.common.back }}</RouterLink></section>
+  <section v-else class="page shell not-found"><p class="eyebrow">{{ t.notFound.code }}</p><h1>{{ t.notFound.title }}</h1><RouterLink to="/essays" class="primary-button">{{ t.common.back }}</RouterLink></section>
 </template>
