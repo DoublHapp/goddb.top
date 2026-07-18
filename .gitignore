@@ -1,6 +1,9 @@
 node_modules/
 dist/
-.trae/
+.trae/*
+!/.trae/skills/
+!/.trae/skills/site-release/
+!/.trae/skills/site-release/SKILL.md
 .env
 .env.*
 !.env.example

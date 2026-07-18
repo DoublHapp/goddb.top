@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Menu, X } from 'lucide-vue-next'
+import { Menu, Moon, Sun, X } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLocale } from '@/composables/useLocale'
+import { useTheme } from '@/composables/useTheme'
 
 const route = useRoute()
 const { t, toggleLocale } = useLocale()
+const { isDark, toggleTheme } = useTheme()
 const open = ref(false)
 
 const navItems = [
@@ -31,6 +33,10 @@ const isActive = (path: string) => path === '/' ? route.path === '/' : route.pat
         </RouterLink>
       </nav>
       <div class="header-actions">
+        <button class="theme-switch" type="button" :aria-label="isDark ? t.common.lightTheme : t.common.darkTheme" :title="isDark ? t.common.lightTheme : t.common.darkTheme" @click="toggleTheme">
+          <Sun v-if="isDark" :size="17" />
+          <Moon v-else :size="17" />
+        </button>
         <button class="language-switch" type="button" @click="toggleLocale">{{ t.language }}</button>
         <button class="menu-button" type="button" :aria-label="t.common.menu" :aria-expanded="open" @click="open = !open">
           <X v-if="open" :size="20" />

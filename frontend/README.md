@@ -1,5 +1,28 @@
-# Vue 3 + TypeScript + Vite
+# goddb.top 前端
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Vue 3 + TypeScript + Vite + Vue Router + Element Plus 的双语个人网站前端。
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## 命令
+
+```bash
+npm install
+npm run dev
+npm run lint
+npm run check
+npm run build
+```
+
+## 内容
+
+- 项目数据：`src/content/index.ts`
+- 博客 Markdown：`src/content/posts/`
+- 页面：`src/pages/`
+- 主题和全局交互：`src/composables/` 与 `src/style.css`
+
+## Vercel
+
+- Root Directory：`frontend`
+- Build Command：`npm run build`
+- Output Directory：`dist`
+
+项目根目录的 `site-release` Skill 会在发布前执行检查，并在推送到 `main` 前请求确认。
