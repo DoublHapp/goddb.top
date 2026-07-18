@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080b0c" />
+    <meta name="description" content="DoublHapp 的双语技术终端与个人作品集。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="DoublHapp · 技术终端与个人作品集" />
+    <meta property="og:description" content="关于前端架构、框架内部机制与系统设计。" />
+    <meta property="og:url" content="https://goddb.top/" />
+    <meta property="og:site_name" content="goddb.top" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="DoublHapp · 技术终端与个人作品集" />
+    <meta name="twitter:description" content="关于前端架构、框架内部机制与系统设计。" />
+    <link rel="canonical" href="https://goddb.top/" />
+    <title>DoublHapp · 技术终端与个人作品集</title>
+    <script type="module">
+      if (import.meta.hot?.on) {
+        import.meta.hot.on('vite:error', (error) => {
+          if (error.err) {
+            console.error(
+              [error.err.message, error.err.frame].filter(Boolean).join('\n'),
+            )
+          }
+        })
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
