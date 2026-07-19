@@ -27,7 +27,11 @@ npm run build
 
 Post 的 `kind` 为 `daily | inspiration | technical`，现有文章使用 `technical`。Essays 通过 `kind` 与 `q` 查询参数同步筛选状态；`/blog` 及其文章地址重定向至 `/essays` 时保留 query 与 hash。剪贴板操作提供完整的中英文成功和失败反馈。新增公开内容时需要同步更新 sitemap。
 
-DB宇宙分为游戏、书架、番剧、放映室、资源堆和吐槽墙，通过 `section`、`mood` 与 `q` 查询参数筛选。详情正文中文优先，英文正文缺失时明确回退中文。视频只接受 Bilibili/YouTube 平台与受控 video ID；资源仅允许原创、官方、开源或明确授权内容，并且必须同时记录来源与授权。当前六条内容均为“等待 DB 投喂”的骨架，不代表真实视频、下载资源或完成观点。
+DB宇宙分为游戏、书架、番剧、放映室、资源堆和吐槽墙，通过 `section`、`mood` 与 `q` 查询参数筛选。详情正文中文优先，英文正文缺失时明确回退中文。视频只接受 Bilibili/YouTube 平台与受控 video ID；资源仅允许原创、官方、开源或明确授权内容，并且必须同时记录来源与授权。当前放映室已有两条正式发布的视频，其余五条内容仍为“等待 DB 投喂”的骨架，不代表真实下载资源或完成观点。
+
+真实视频使用 `platform + videoId + sourceUrl + creator` 注册；`sourceUrl` 必须是去除分享参数后的原平台地址。网站只嵌入平台播放器并保留原视频入口，不抓取或重新托管视频。大体积视频不进入 Git/Vercel，应先上传 Bilibili 或对象存储。
+
+Markdown 由 `marked` 解析并经 `DOMPurify` 白名单清洗，不允许绕过清洗直接将内容 HTML 写入 DOM。随笔正文允许中文必填、英文可选；英文缺失时显示明确回退提示。`learningArchive` 会显示学习存档免责声明，长文目录由 h2/h3 自动生成。完整商业游戏文件不得作为资源上传。
 
 每项工具在 `subdomain` 字段声明独立子域名，主站 `/tools/:slug` 提供目录与详情入口。收藏和最近访问分别保存到 `goddb:favourite-tools` 与 `goddb:recent-tools`，读取与写入仅接受工具数据中存在的 slug。
 

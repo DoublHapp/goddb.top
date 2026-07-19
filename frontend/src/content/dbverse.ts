@@ -2,7 +2,8 @@ import type { DbverseEntry } from '@/types/content'
 import p5rPalaceZh from './dbverse/p5r-palace-after-hours.zh-CN.md?raw'
 import redChamberZh from './dbverse/dream-of-the-red-chamber-notes.zh-CN.md?raw'
 import jojoZh from './dbverse/jojo-bizarre-frequency.zh-CN.md?raw'
-import editingRoomZh from './dbverse/p5r-editing-room.zh-CN.md?raw'
+import sekiroZh from './dbverse/sekiro-immortality-story.zh-CN.md?raw'
+import narutoZh from './dbverse/naruto-blue-bird-memory.zh-CN.md?raw'
 import resourcePileZh from './dbverse/db-resource-pile.zh-CN.md?raw'
 import dailyRantZh from './dbverse/daily-rant-transmission.zh-CN.md?raw'
 
@@ -26,10 +27,18 @@ export const dbverseEntries: DbverseEntry[] = [
     section: 'anime', moods: ['hilarious', 'chaotic'], tags: ['JOJO', '荒木飞吕彦', '替身'], status: 'awaiting-content', accent: '#8d5cff', content: { 'zh-CN': jojoZh }, featured: true,
   },
   {
-    slug: 'p5r-editing-room',
-    title: { 'zh-CN': 'P5R 剪辑室：时间轴在反抗', en: 'P5R editing room: the timeline fights back' },
-    excerpt: { 'zh-CN': '游戏剪辑预留放映位。当前播放器正在等待 DB 投喂。', en: 'A future home for game edits. The player is waiting for DB.' },
-    section: 'screening', moods: ['obsessed', 'chaotic'], tags: ['游戏剪辑', 'P5R', 'Video'], status: 'awaiting-content', accent: '#ff8a38', content: { 'zh-CN': editingRoomZh }, featured: false,
+    slug: 'sekiro-immortality-story',
+    title: { 'zh-CN': '只狼Sekiro：这是一个关于不死的故事', en: 'Sekiro: A Story About Immortality' },
+    excerpt: { 'zh-CN': '记录一下自己的只狼历程。', en: 'A video record of DB’s journey through Sekiro.' },
+    section: 'screening', moods: ['obsessed', 'melancholy'], tags: ['只狼', 'Sekiro', '游戏剪辑'], status: 'published', accent: '#e6532f', publishedAt: '2023-01-03', content: { 'zh-CN': sekiroZh }, featured: true,
+    media: { platform: 'bilibili', videoId: 'BV1xg411x7s8', sourceUrl: 'https://www.bilibili.com/video/BV1xg411x7s8/', creator: { 'zh-CN': 'DB（B站：六玄渊）', en: 'DB (Bilibili: 六玄渊)' }, title: { 'zh-CN': '只狼Sekiro：这是一个关于不死的故事', en: 'Sekiro: A Story About Immortality' } },
+  },
+  {
+    slug: 'naruto-blue-bird-memory',
+    title: { 'zh-CN': '不知不觉，火影也完结6年了，可当那首《青鸟》、那些忍术再现，还是不禁热血沸腾', en: 'Six Years Later, Blue Bird Still Ignites the Naruto Spirit' },
+    excerpt: { 'zh-CN': '当《青鸟》和那些忍术再次出现，热血会自己找到回来的路。', en: 'When Blue Bird and those jutsu return, the old excitement finds its way back.' },
+    section: 'screening', moods: ['obsessed', 'broken'], tags: ['火影忍者', '青鸟', '动漫剪辑'], status: 'published', accent: '#2f8eff', publishedAt: '2023-06-01', content: { 'zh-CN': narutoZh }, featured: true,
+    media: { platform: 'bilibili', videoId: 'BV1Pk4y1s7Mb', sourceUrl: 'https://www.bilibili.com/video/BV1Pk4y1s7Mb/', creator: { 'zh-CN': 'DB（B站：六玄渊）', en: 'DB (Bilibili: 六玄渊)' }, title: { 'zh-CN': '不知不觉，火影也完结6年了，可当那首《青鸟》、那些忍术再现，还是不禁热血沸腾', en: 'Six Years Later, Blue Bird Still Ignites the Naruto Spirit' } },
   },
   {
     slug: 'db-resource-pile',

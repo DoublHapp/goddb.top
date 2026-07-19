@@ -5,6 +5,7 @@ import contentSystemEn from './posts/designing-content-systems.en.md?raw'
 import contentSystemZh from './posts/designing-content-systems.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'
 import vueRendererZh from './posts/vue-rendering-notes.zh-CN.md?raw'
+import vueFrameworkNotesZh from './posts/vue-framework-study-notes.zh-CN.md?raw'
 
 export const profile: Profile = {
   name: 'DB',
@@ -73,6 +74,21 @@ export const projects: Project[] = [
 ]
 
 export const posts: Post[] = [
+  {
+    slug: 'vue-framework-study-notes',
+    title: { 'zh-CN': 'Vue 框架学习笔记（完整存档）', en: 'Vue Framework Study Notes (Full Archive)' },
+    excerpt: {
+      'zh-CN': '一份覆盖 Vue 2 与 Vue 3 基础、指令、生命周期和组件通信的个人学习存档。',
+      en: 'A personal learning archive covering Vue 2 and Vue 3 basics, directives, lifecycle, and component communication.',
+    },
+    kind: 'technical',
+    category: 'Vue Learning Archive',
+    tags: ['Vue', 'Vue 2', 'Vue 3', '学习笔记'],
+    publishedAt: '2026-02-02',
+    readingTime: 56,
+    content: { 'zh-CN': vueFrameworkNotesZh },
+    learningArchive: true,
+  },
   {
     slug: 'designing-content-systems',
     title: { 'zh-CN': '为长期维护设计内容系统', en: 'Designing content systems for the long run' },

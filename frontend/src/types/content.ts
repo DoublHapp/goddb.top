@@ -55,7 +55,8 @@ export interface Post {
   tags: string[]
   publishedAt: string
   readingTime: number
-  content: LocalizedText
+  content: { 'zh-CN': string; en?: string }
+  learningArchive?: boolean
 }
 
 export type DbverseSection = 'games' | 'books' | 'anime' | 'screening' | 'resources' | 'rants'
@@ -66,6 +67,8 @@ export interface DbverseMedia {
   platform: 'bilibili' | 'youtube'
   videoId: string
   title?: LocalizedText
+  sourceUrl: string
+  creator: LocalizedText
 }
 
 export interface DbverseResource {
