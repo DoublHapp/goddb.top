@@ -1,6 +1,7 @@
 import type { Post, Profile, Project } from '@/types/content'
 export { tools } from './tools'
 export { dbverseEntries } from './dbverse'
+import aiReplyVoiceDemoZh from './posts/ai-reply-voice-demo-from-scratch.zh-CN.md?raw'
 import contentSystemEn from './posts/designing-content-systems.en.md?raw'
 import contentSystemZh from './posts/designing-content-systems.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'
@@ -74,6 +75,20 @@ export const projects: Project[] = [
 ]
 
 export const posts: Post[] = [
+  {
+    slug: 'ai-reply-voice-demo-from-scratch',
+    title: { 'zh-CN': '零基础搭建 AI 回复语音 Demo', en: 'Build an AI Reply and Voice Demo from Scratch' },
+    excerpt: {
+      'zh-CN': '面向零基础读者，用 Windows 10/11、Trae、GitHub 与 Vercel 完成 AI 回复和 MP3 语音工作台的搭建与发布。',
+      en: 'A beginner-friendly guide to building and deploying an AI reply and MP3 voice workspace with Windows, Trae, GitHub, and Vercel.',
+    },
+    kind: 'technical',
+    category: 'AI Demo',
+    tags: ['AI', 'Trae', 'Vercel', '语音合成'],
+    publishedAt: '2026-07-20',
+    readingTime: 43,
+    content: { 'zh-CN': aiReplyVoiceDemoZh },
+  },
   {
     slug: 'vue-framework-study-notes',
     title: { 'zh-CN': 'Vue 框架学习笔记（完整存档）', en: 'Vue Framework Study Notes (Full Archive)' },
