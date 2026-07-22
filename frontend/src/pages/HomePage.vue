@@ -39,7 +39,7 @@ useSeo(() => locale.value === 'zh-CN' ? 'DB 的线上工作台' : 'DB’s workbe
     <RouterLink to="/dbverse" class="worldline-banner shell">
       <div><span class="eyebrow">{{ t.dbverse.eyebrow }}</span><h2>{{ t.dbverse.bannerTitle }}</h2><p>{{ t.dbverse.bannerDescription }}</p></div>
       <span class="worldline-cta">{{ t.dbverse.enter }} <ArrowUpRight :size="18" /></span>
-      <div class="worldline-track" aria-hidden="true"><span>P5R · 红楼梦 · JOJO · GAME CUTS · RESOURCES · RANTS · </span><span>P5R · 红楼梦 · JOJO · GAME CUTS · RESOURCES · RANTS · </span></div>
+      <div class="worldline-track" aria-hidden="true"><span>只狼 · 火影忍者 · GAME CUTS · </span><span>只狼 · 火影忍者 · GAME CUTS · </span></div>
     </RouterLink>
 
     <nav class="home-secondary shell" aria-label="Secondary navigation">

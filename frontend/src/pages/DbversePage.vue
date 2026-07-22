@@ -11,7 +11,7 @@ import type { DbverseMood, DbverseSection } from '@/types/content'
 const route = useRoute()
 const router = useRouter()
 const { locale, t } = useLocale()
-const sections: DbverseSection[] = ['games', 'books', 'anime', 'screening', 'resources', 'rants']
+const sections: DbverseSection[] = ['screening']
 const moods: DbverseMood[] = ['obsessed', 'broken', 'hilarious', 'melancholy', 'chaotic']
 const validSection = (value: unknown): value is DbverseSection => typeof value === 'string' && sections.includes(value as DbverseSection)
 const validMood = (value: unknown): value is DbverseMood => typeof value === 'string' && moods.includes(value as DbverseMood)
@@ -43,7 +43,7 @@ useSeo(() => t.value.dbverse.title, () => t.value.dbverse.subtitle, '/dbverse')
 
 <template>
   <section class="page shell dbverse-page">
-    <header class="page-lead dbverse-hero"><p class="eyebrow">{{ t.dbverse.eyebrow }}</p><h1>{{ t.dbverse.title }}</h1><p>{{ t.dbverse.subtitle }}</p><div class="dbverse-signal" aria-hidden="true"><span>P5R</span><span>JOJO</span><span>红楼梦</span></div></header>
+    <header class="page-lead dbverse-hero"><p class="eyebrow">{{ t.dbverse.eyebrow }}</p><h1>{{ t.dbverse.title }}</h1><p>{{ t.dbverse.subtitle }}</p><div class="dbverse-signal" aria-hidden="true"><span>只狼</span><span>火影</span><span>游戏剪辑</span></div></header>
     <div class="filter-workbench dbverse-filters">
       <label class="search-field"><Search :size="16" /><input v-model="queryText" type="search" :placeholder="t.dbverse.search"></label>
       <div class="filter-chips"><button :class="{ active: section === 'all' }" @click="section = 'all'">{{ t.dbverse.all }}</button><button v-for="item in sections" :key="item" :class="{ active: section === item }" @click="section = item">{{ t.dbverse.sections[item] }}</button></div>
