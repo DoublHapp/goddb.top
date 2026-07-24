@@ -4,6 +4,7 @@ export { dbverseEntries } from './dbverse'
 import aiReplyVoiceDemoZh from './posts/ai-reply-voice-demo-from-scratch.zh-CN.md?raw'
 import contentSystemEn from './posts/designing-content-systems.en.md?raw'
 import contentSystemZh from './posts/designing-content-systems.zh-CN.md?raw'
+import javascriptStudyNotesZh from './posts/javascript-study-notes.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'
 import vueRendererZh from './posts/vue-rendering-notes.zh-CN.md?raw'
 import vueFrameworkNotesZh from './posts/vue-framework-study-notes.zh-CN.md?raw'
@@ -75,6 +76,21 @@ export const projects: Project[] = [
 ]
 
 export const posts: Post[] = [
+  {
+    slug: 'javascript-study-notes',
+    title: { 'zh-CN': 'JavaScript 学习笔记（完整存档）', en: 'JavaScript Study Notes (Full Archive)' },
+    excerpt: {
+      'zh-CN': '一份覆盖 JavaScript 语言基础、DOM 与事件、作用域、闭包、原型、继承、拷贝和性能优化的个人学习存档。',
+      en: 'A personal learning archive covering JavaScript fundamentals, DOM and events, scope, closures, prototypes, inheritance, copying, and performance patterns.',
+    },
+    kind: 'technical',
+    category: 'JavaScript Learning Archive',
+    tags: ['JavaScript', 'Web API', 'DOM', '学习笔记'],
+    publishedAt: '2025-09-28',
+    readingTime: 18,
+    content: { 'zh-CN': javascriptStudyNotesZh },
+    learningArchive: true,
+  },
   {
     slug: 'ai-reply-voice-demo-from-scratch',
     title: { 'zh-CN': '零基础搭建 AI 回复语音 Demo', en: 'Build an AI Reply and Voice Demo from Scratch' },
