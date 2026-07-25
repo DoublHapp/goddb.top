@@ -45,7 +45,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', handleKeydown))
 </script>
 
 <template>
-  <header class="site-header" :class="{ 'site-header--open': open }">
+  <header class="site-header" :class="{ 'site-header--open': open, 'site-header--dbverse': route.path.startsWith('/dbverse') }">
     <div class="shell header-inner">
       <RouterLink to="/" class="brand" :aria-label="t.common.brandHome" @click="open = false">
         <img class="brand-icon" src="/goddb-icon.png" alt="">

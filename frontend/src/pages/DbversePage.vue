@@ -1,57 +1,35 @@
 <script setup lang="ts">
-import { Dices, Search, X } from 'lucide-vue-next'
-import { computed, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import DbverseCard from '@/components/DbverseCard.vue'
-import { dbverseEntries } from '@/content'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import DbverseFallbackMap from '@/components/dbverse/DbverseFallbackMap.vue'
+import DbverseGalaxy from '@/components/dbverse/DbverseGalaxy.vue'
+import DbverseHud from '@/components/dbverse/DbverseHud.vue'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
-import type { DbverseMood, DbverseSection } from '@/types/content'
+import type { DbverseIpSlug } from '@/types/content'
 
-const route = useRoute()
 const router = useRouter()
-const { locale, t } = useLocale()
-const sections: DbverseSection[] = ['screening']
-const moods: DbverseMood[] = ['obsessed', 'broken', 'hilarious', 'melancholy', 'chaotic']
-const validSection = (value: unknown): value is DbverseSection => typeof value === 'string' && sections.includes(value as DbverseSection)
-const validMood = (value: unknown): value is DbverseMood => typeof value === 'string' && moods.includes(value as DbverseMood)
-const queryText = ref(typeof route.query.q === 'string' ? route.query.q : '')
-const section = ref<DbverseSection | 'all'>(validSection(route.query.section) ? route.query.section : 'all')
-const mood = ref<DbverseMood | 'all'>(validMood(route.query.mood) ? route.query.mood : 'all')
-const filteredEntries = computed(() => {
-  const keyword = queryText.value.trim().toLocaleLowerCase()
-  return dbverseEntries.filter((entry) => {
-    const haystack = [entry.title[locale.value], entry.excerpt[locale.value], ...entry.tags].join(' ').toLocaleLowerCase()
-    return (!keyword || haystack.includes(keyword)) && (section.value === 'all' || entry.section === section.value) && (mood.value === 'all' || entry.moods.includes(mood.value))
-  })
-})
-const syncQuery = () => router.replace({ query: { ...(queryText.value.trim() && { q: queryText.value.trim() }), ...(section.value !== 'all' && { section: section.value }), ...(mood.value !== 'all' && { mood: mood.value }) } })
-watch([queryText, section, mood], syncQuery)
-watch(() => route.query, (query) => {
-  queryText.value = typeof query.q === 'string' ? query.q : ''
-  section.value = validSection(query.section) ? query.section : 'all'
-  mood.value = validMood(query.mood) ? query.mood : 'all'
-})
-const clearFilters = () => { queryText.value = ''; section.value = 'all'; mood.value = 'all' }
-const teleport = () => {
-  if (!filteredEntries.value.length) return
-  const entry = filteredEntries.value[Math.floor(Math.random() * filteredEntries.value.length)]
-  if (entry) router.push(`/dbverse/${entry.slug}`)
-}
+const { t } = useLocale()
+const galaxy = ref<InstanceType<typeof DbverseGalaxy>>()
+const focusedIp = ref<DbverseIpSlug>()
+const fallback = ref(false)
+const state = ref<'loading' | 'overview' | 'focusing' | 'focused' | 'leaving' | 'fallback'>('loading')
+const busy = computed(() => state.value === 'loading' || state.value === 'focusing' || state.value === 'leaving')
+const select = (slug: DbverseIpSlug) => { if (state.value === 'overview' || state.value === 'focused') focusedIp.value = slug }
+const enter = async (slug = focusedIp.value) => { if (!slug || state.value !== 'focused' && state.value !== 'fallback') return; state.value = 'leaving'; await new Promise((resolve) => window.setTimeout(resolve, 260)); await router.push(`/dbverse/ip/${slug}`) }
+const reset = () => { if (state.value === 'focusing' || state.value === 'leaving') return; focusedIp.value = undefined; state.value = fallback.value ? 'fallback' : 'overview'; galaxy.value?.reset() }
+const sceneState = (value: 'loading' | 'ready' | 'focusing' | 'focused' | 'fallback') => { state.value = value === 'ready' ? 'overview' : value }
+const useFallback = () => { fallback.value = true; state.value = 'fallback' }
+const keydown = (event: KeyboardEvent) => { if (event.key === 'Escape') reset() }
+onMounted(() => window.addEventListener('keydown', keydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', keydown))
 useSeo(() => t.value.dbverse.title, () => t.value.dbverse.subtitle, '/dbverse')
 </script>
 
 <template>
-  <section class="page shell dbverse-page">
-    <header class="page-lead dbverse-hero"><p class="eyebrow">{{ t.dbverse.eyebrow }}</p><h1>{{ t.dbverse.title }}</h1><p>{{ t.dbverse.subtitle }}</p><div class="dbverse-signal" aria-hidden="true"><span>只狼</span><span>火影</span><span>游戏剪辑</span></div></header>
-    <div class="filter-workbench dbverse-filters">
-      <label class="search-field"><Search :size="16" /><input v-model="queryText" type="search" :placeholder="t.dbverse.search"></label>
-      <div class="filter-chips"><button :class="{ active: section === 'all' }" @click="section = 'all'">{{ t.dbverse.all }}</button><button v-for="item in sections" :key="item" :class="{ active: section === item }" @click="section = item">{{ t.dbverse.sections[item] }}</button></div>
-      <div class="filter-chips mood-filters"><button :class="{ active: mood === 'all' }" @click="mood = 'all'">{{ t.dbverse.allMoods }}</button><button v-for="item in moods" :key="item" :class="{ active: mood === item }" @click="mood = item">{{ t.dbverse.moods[item] }}</button></div>
-      <button class="clear-filter" type="button" @click="clearFilters"><X :size="14" />{{ t.common.clear }}</button>
-    </div>
-    <div class="dbverse-result-bar"><span>{{ filteredEntries.length }} {{ t.dbverse.results }}</span><button type="button" :disabled="!filteredEntries.length" @click="teleport"><Dices :size="16" />{{ t.dbverse.random }}</button></div>
-    <TransitionGroup v-if="filteredEntries.length" name="list" tag="div" class="dbverse-grid"><DbverseCard v-for="(entry, index) in filteredEntries" :key="entry.slug" :entry="entry" :index="index" /></TransitionGroup>
-    <div v-else class="empty-state"><p>{{ t.dbverse.empty }}</p><button type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+  <section class="dbverse-stage dbverse-overview">
+    <DbverseGalaxy v-if="!fallback" ref="galaxy" mode="overview" :interactive="!busy" @select="select" @confirm="enter" @fallback="useFallback" @state="sceneState" />
+    <DbverseFallbackMap v-else @select="select" @confirm="enter" />
+    <DbverseHud :focused-ip="focusedIp" :busy="busy" :status="state === 'loading' ? t.dbverse.loading : state === 'focusing' ? t.dbverse.focusing : state === 'leaving' ? t.dbverse.leaving : focusedIp ? t.dbverse.focused : t.dbverse.hint" @enter="enter()" @reset="reset" />
   </section>
 </template>

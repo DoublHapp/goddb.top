@@ -59,9 +59,23 @@ export interface Post {
   learningArchive?: boolean
 }
 
-export type DbverseSection = 'games' | 'books' | 'anime' | 'screening' | 'resources' | 'rants'
 export type DbverseMood = 'obsessed' | 'broken' | 'hilarious' | 'melancholy' | 'chaotic'
 export type DbverseStatus = 'awaiting-content' | 'published'
+export type DbverseIpSlug = 'naruto' | 'sekiro'
+
+export interface DbverseIp {
+  slug: DbverseIpSlug
+  name: LocalizedText
+  title: LocalizedText
+  description: LocalizedText
+  accent: string
+  secondaryColor: string
+  celestialType: 'planet' | 'eclipse'
+  position: [number, number, number]
+  radius: number
+  orbitSpeed: number
+  mass: 'medium' | 'heavy'
+}
 
 export interface DbverseMedia {
   platform: 'bilibili' | 'youtube'
@@ -82,7 +96,7 @@ export interface DbverseEntry {
   slug: string
   title: LocalizedText
   excerpt: LocalizedText
-  section: DbverseSection
+  ip: DbverseIpSlug
   moods: DbverseMood[]
   tags: string[]
   status: DbverseStatus

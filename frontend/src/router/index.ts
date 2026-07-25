@@ -8,8 +8,6 @@ import ProjectDetailPage from '@/pages/ProjectDetailPage.vue'
 import ProjectsPage from '@/pages/ProjectsPage.vue'
 import ToolsPage from '@/pages/ToolsPage.vue'
 import ToolDetailPage from '@/pages/ToolDetailPage.vue'
-import DbversePage from '@/pages/DbversePage.vue'
-import DbverseDetailPage from '@/pages/DbverseDetailPage.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', name: 'home', component: HomePage },
@@ -20,8 +18,9 @@ const routes: RouteRecordRaw[] = [
   { path: '/tools/:slug', name: 'tool-detail', component: ToolDetailPage },
   { path: '/essays', name: 'essays', component: EssaysPage },
   { path: '/essays/:slug', name: 'essay-detail', component: PostDetailPage },
-  { path: '/dbverse', name: 'dbverse', component: DbversePage },
-  { path: '/dbverse/:slug', name: 'dbverse-detail', component: DbverseDetailPage },
+  { path: '/dbverse', name: 'dbverse', component: () => import('@/pages/DbversePage.vue') },
+  { path: '/dbverse/ip/:slug', name: 'dbverse-ip', component: () => import('@/pages/DbverseIpPage.vue') },
+  { path: '/dbverse/:slug', name: 'dbverse-detail', component: () => import('@/pages/DbverseDetailPage.vue') },
   { path: '/blog', redirect: (to) => ({ path: '/essays', query: to.query, hash: to.hash }) },
   { path: '/blog/:slug', redirect: (to) => ({ path: `/essays/${to.params.slug}`, query: to.query, hash: to.hash }) },
   { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },

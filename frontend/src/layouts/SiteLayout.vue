@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import SiteFooter from '@/components/SiteFooter.vue'
 import SiteHeader from '@/components/SiteHeader.vue'
 
 const route = useRoute()
+const isDbverseRoute = computed(() => route.path.startsWith('/dbverse'))
 const cursorGlow = ref<HTMLElement>()
 let observer: IntersectionObserver | undefined
 let cursorFrame = 0
@@ -57,16 +58,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="site-frame">
-    <div ref="cursorGlow" class="cursor-glow" aria-hidden="true"></div>
+  <div class="site-frame" :class="{ 'site-frame--dbverse': isDbverseRoute }">
+    <div v-if="!isDbverseRoute" ref="cursorGlow" class="cursor-glow" aria-hidden="true"></div>
     <SiteHeader />
     <main>
-      <RouterView v-slot="{ Component }">
-        <Transition name="page-shift" mode="out-in" appear>
-          <component :is="Component" :key="$route.fullPath" />
+      <RouterView v-slot="{ Component, route: viewRoute }">
+        <component :is="Component" v-if="isDbverseRoute" :key="viewRoute.fullPath" />
+        <Transition v-else name="page-shift" mode="out-in" appear>
+          <component :is="Component" :key="viewRoute.fullPath" />
         </Transition>
       </RouterView>
     </main>
-    <SiteFooter />
+    <SiteFooter v-if="!isDbverseRoute" />
   </div>
 </template>
