@@ -31,12 +31,17 @@ jobs:
         working-directory: frontend
         run: npm run build
 
+      - name: Write deploy key
+        run: |
+          echo "${{ secrets.GODDB_SSH_KEY_B64 }}" | base64 -d > /tmp/goddb_deploy_key
+          chmod 600 /tmp/goddb_deploy_key
+
       - name: Deploy dist to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.GODDB_SERVER_HOST }}
           username: ${{ secrets.GODDB_SERVER_USER }}
-          key: ${{ secrets.GODDB_SSH_KEY }}
+          key_path: /tmp/goddb_deploy_key
           source: 'frontend/dist/*'
           target: '/opt/goddb/deploy/dist/'
           strip_components: 2
