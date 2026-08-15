@@ -29,7 +29,7 @@ Post 的 `kind` 为 `daily | inspiration | technical`，现有文章使用 `tech
 
 DB宇宙分为游戏、书架、番剧、放映室、资源堆和吐槽墙，通过 `section`、`mood` 与 `q` 查询参数筛选。详情正文中文优先，英文正文缺失时明确回退中文。视频只接受 Bilibili/YouTube 平台与受控 video ID；资源仅允许原创、官方、开源或明确授权内容，并且必须同时记录来源与授权。当前放映室已有两条正式发布的视频，其余五条内容仍为“等待 DB 投喂”的骨架，不代表真实下载资源或完成观点。
 
-真实视频使用 `platform + videoId + sourceUrl + creator` 注册；`sourceUrl` 必须是去除分享参数后的原平台地址。网站只嵌入平台播放器并保留原视频入口，不抓取或重新托管视频。大体积视频不进入 Git/Vercel，应先上传 Bilibili 或对象存储。
+真实视频使用 `platform + videoId + sourceUrl + creator` 注册；`sourceUrl` 必须是去除分享参数后的原平台地址。网站只嵌入平台播放器并保留原视频入口，不抓取或重新托管视频。大体积视频不进入 Git 仓库，应先上传 Bilibili 或对象存储。
 
 Markdown 由 `marked` 解析并经 `DOMPurify` 白名单清洗，不允许绕过清洗直接将内容 HTML 写入 DOM。随笔正文允许中文必填、英文可选；英文缺失时显示明确回退提示。`learningArchive` 会显示学习存档免责声明，长文目录由 h2/h3 自动生成。完整商业游戏文件不得作为资源上传。
 
@@ -37,10 +37,6 @@ Markdown 由 `marked` 解析并经 `DOMPurify` 白名单清洗，不允许绕过
 
 Canvas 在桌面端绘制 70 个节点、移动端绘制 28 个节点，设备像素比最高取 2。页面不可见时暂停动画；系统启用 reduced motion 时保留静态画面，不启动连续帧循环。
 
-## Vercel
+## 部署
 
-- Root Directory：`frontend`
-- Build Command：`npm run build`
-- Output Directory：`dist`
-
-项目根目录的 `site-release` Skill 会在发布前执行检查，并在推送到 `main` 前请求确认。
+推送 `main` 分支后，GitHub Actions（`.github/workflows/deploy.yml`）自动执行 `npm run build`，将 `dist` 上传到自建服务器（VMISS）由 nginx 托管，无需任何第三方托管平台；完整技术栈版本见根目录 README 的"技术栈与版本"表。项目根目录的 `site-release` Skill 会在发布前执行检查，并在推送到 `main` 前请求确认。

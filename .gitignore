@@ -7,8 +7,10 @@ dist/
 .env
 .env.*
 !.env.example
+!deploy/.env.example
 .DS_Store
 .idea/
+.vercel/
 .vscode/*
 !.vscode/extensions.json
 target/
