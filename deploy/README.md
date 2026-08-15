@@ -248,6 +248,39 @@ Action: Block。语义：媒体域名上，带非 goddb.top Referer 的请求 �
 
 要点：密钥只存后端；`S3Presigner` 生成带 `X-Amz-Signature` 与 `Expires` 的 URL；前端与用户接触不到任何密钥。
 
+### 数据库自动备份（PostgreSQL → R2）
+
+服务器每日自动 `pg_dump` 备份 goddb 数据库到 R2，保留最近 30 天。脚本在仓库 `deploy/backup/goddb-backup.sh`（rclone 实现）。
+
+服务器一次性配置：
+
+```bash
+# 1. 安装 rclone
+apt install -y rclone
+
+# 2. 配置 R2 remote（key 从本地仓库根 .env.r2.local 取，勿写入聊天/仓库）
+rclone config create r2 s3 provider Cloudflare \
+  access_key_id <R2_ACCESS_KEY_ID> secret_access_key <R2_SECRET_ACCESS_KEY> \
+  endpoint https://383b25c66f358e7b0fa040dfb1837e1d.r2.cloudflarestorage.com
+
+# 3. 拉取脚本并授权
+git -C /opt/goddb pull && chmod +x /opt/goddb/deploy/backup/goddb-backup.sh
+
+# 4. 手动测试运行一次
+/opt/goddb/deploy/backup/goddb-backup.sh
+
+# 5. 验证 R2 上已出现备份对象
+rclone ls r2:goddb-media/backups/
+
+# 6. 配置 cron 每日 03:30 备份（输出写入 /var/log/goddb-backup.log）
+(crontab -l 2>/dev/null; echo '30 3 * * * /opt/goddb/deploy/backup/goddb-backup.sh >> /var/log/goddb-backup.log 2>&1') | crontab -
+crontab -l   # 确认已添加
+```
+
+备份对象：`goddb-media` 桶 `backups/goddb-<时间戳>.dump`（`pg_dump -Fc` 自定义格式，自带压缩）。本地临时备份保留 3 天、R2 保留 30 天（脚本内 `KEEP_R2_DAYS` 可调）。恢复方式：`rclone copy r2:goddb-media/backups/<文件> . && docker exec -i goddb-postgres pg_restore -U goddb -d goddb --clean --if-exists < <文件>`。
+
+> 备份是灾备底线：数据卷不会自动迁移，若需保留超过 30 天的归档，调大 `KEEP_R2_DAYS` 或定期另存。
+
 ## 换服务器迁移 Checklist
 
 1. 备份服务器上 `/opt/goddb/deploy/`（含 `dist`、`certs`、`docker-compose.yml`、`nginx.conf`）
