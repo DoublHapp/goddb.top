@@ -1,4 +1,8 @@
-# goddb.top 自动部署：push 到 main 后云端构建前端并上传到 VMISS 服务器
+# goddb.top 自动部署：push 到 main 后云端构建并部署到 VMISS 服务器
+#
+# 两个 job：
+#   - deploy-frontend：构建前端 dist 并 scp 上传到服务器（nginx 即时生效）
+#   - deploy-backend：SSH 到服务器 git pull 后 compose 构建并启动后端容器（含 postgres）
 name: Deploy goddb.top to VMISS
 
 on:
@@ -6,11 +10,13 @@ on:
     branches: [main]
     paths:
       - 'frontend/**'
+      - 'backend/**'
+      - 'deploy/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch: {}
 
 jobs:
-  build-and-deploy:
+  deploy-frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -54,3 +60,35 @@ jobs:
           source: 'frontend/dist/*'
           target: '/opt/goddb/deploy/dist/'
           strip_components: 2
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: deploy-frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Decode deploy key
+        id: decode_key
+        run: |
+          DECODED=$(printf '%s' "${{ secrets.GODDB_SSH_KEY_B64 }}" | base64 -d)
+          if ! printf '%s' "$DECODED" | grep -q "BEGIN OPENSSH"; then
+            echo "DECODE_FAILED: secret content is not a valid key"
+            exit 1
+          fi
+          echo "key<<EOF" >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$DECODED" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "DECODE_OK"
+
+      - name: SSH to server, pull and rebuild backend
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.GODDB_SERVER_HOST }}
+          username: ${{ secrets.GODDB_SERVER_USER }}
+          key: |
+            ${{ steps.decode_key.outputs.key }}
+          script: |
+            cd /opt/goddb && git pull
+            cd deploy && docker compose --profile backend up -d --build postgres backend
+            echo "Backend deployment finished"

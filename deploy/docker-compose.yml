@@ -2,10 +2,12 @@
 #
 # 当前阶段：
 #   - nginx 容器托管前端静态站（dist 构建产物）
-#   - redis / rabbitmq 中间件容器已就绪，后端可直接连接
+#   - postgres 数据库（评论区等动态数据）
+#   - redis / rabbitmq 中间件容器已就绪，后端可按需连接
 #
-# 后续阶段（Spring Boot 后端代码就绪后）：
+# 后端启用：
 #   docker compose --profile backend up -d --build
+#   需先在 deploy/ 目录创建 .env（参考 .env.example），包含 POSTGRES_PASSWORD 与 GODDB_ADMIN_TOKEN
 #
 # 换服务器迁移：拷贝本目录 + docker compose up -d 即可恢复全部服务
 name: goddb
@@ -24,12 +26,13 @@ services:
       - ./certs:/etc/nginx/certs:ro
       - ./certbot:/var/www/certbot:ro
     depends_on:
+      - postgres
       - redis
       - rabbitmq
     networks:
       - goddb
 
-  # Spring Boot 后端（预留服务，镜像就绪后取消注释即可启用）
+  # Spring Boot 后端（评论区 API；默认不启动，启用见文件头注释）
   backend:
     image: goddb-backend:latest
     container_name: goddb-backend
@@ -39,15 +42,41 @@ services:
       context: ../backend
     environment:
       SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/goddb
+      SPRING_DATASOURCE_USERNAME: goddb
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in deploy/.env}
+      GODDB_ADMIN_TOKEN: ${GODDB_ADMIN_TOKEN:?GODDB_ADMIN_TOKEN must be set in deploy/.env}
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
     depends_on:
-      - redis
-      - rabbitmq
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
     networks:
       - goddb
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: goddb-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: goddb
+      POSTGRES_USER: goddb
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in deploy/.env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - goddb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U goddb -d goddb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:7-alpine
@@ -78,5 +107,6 @@ networks:
     driver: bridge
 
 volumes:
+  postgres-data:
   redis-data:
   rabbitmq-data:

@@ -13,16 +13,20 @@
                     │      ▼
                     │  spring-boot 容器（预留，profile 启用）
                     │      │
+                    │      ├──▶ postgres 17（数据库，评论区等动态数据）
                     │      ├──▶ redis 容器（缓存）
                     │      └──▶ rabbitmq 容器（消息队列）
-                    └─────────▶ （数据库按需接入）
+                    └─────────▶
 ```
 
 - **nginx**：端口 `80/443`；托管 `dist/` 静态文件（bind mount），SPA 路由 `try_files` 回退，`/api/` 运行时解析反代到 `backend:8080`
-- **backend**：Spring Boot 预留服务，`profiles: ["backend"]` 默认不启动，就绪后 `docker compose --profile backend up -d --build`
+- **backend**：Spring Boot 服务（评论区 API），`profiles: ["backend"]` 默认不启动，就绪后 `docker compose --profile backend up -d --build`
+- **postgres**：17-alpine，数据卷 `postgres-data` 持久化；后端依赖其 healthy 状态
 - **redis**：内部网络，仅容器间访问，`appendonly` 持久化到卷
 - **rabbitmq**：`5672` 仅内部网络；管理台 `15672` 只绑定 `127.0.0.1`（本机 SSH 隧道访问）
-- 数据卷：`redis-data`、`rabbitmq-data`（`docker volume` 管理）
+- 数据卷：`postgres-data`、`redis-data`、`rabbitmq-data`（`docker volume` 管理）
+
+后端启用前需在 `deploy/` 目录创建 `.env`（复制 `.env.example` 并填写 `POSTGRES_PASSWORD`、`GODDB_ADMIN_TOKEN`）。
 
 ## 服务器初始化
 
@@ -145,7 +149,12 @@ sed -i 's/^#\?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd
 
 ### 自动部署（推荐）
 
-`.github/workflows/deploy.yml`：push 到 `main` 且改动 `frontend/**` 时触发 → 云端 Node 22 构建 → scp 上传 `dist` 到服务器 `/opt/goddb/deploy/dist/`（nginx bind mount 实时生效）。
+`.github/workflows/deploy.yml`：push 到 `main` 且改动 `frontend/**`、`backend/**`、`deploy/**` 或 workflow 本身时触发：
+
+1. **deploy-frontend**：云端 Node 22 构建 → scp 上传 `dist` 到服务器 `/opt/goddb/deploy/dist/`（nginx bind mount 实时生效）。
+2. **deploy-backend**（依赖 frontend 成功）：SSH 到服务器 `git pull` → `docker compose --profile backend up -d --build postgres backend`。
+
+> 后端启用前，服务器 `/opt/goddb/deploy/.env` 必须存在（复制仓库内 `deploy/.env.example` 并填写 `POSTGRES_PASSWORD`、`GODDB_ADMIN_TOKEN`）。
 
 仓库 Secrets（GitHub → Settings → Secrets and variables → Actions）：
 

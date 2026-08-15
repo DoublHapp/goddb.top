@@ -2,6 +2,7 @@
 import { ArrowLeft, ArrowUp, Check, Copy, Link2 } from 'lucide-vue-next'
 import { computed, createApp, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import PostComments from '@/components/PostComments.vue'
 import { posts } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
@@ -120,6 +121,7 @@ useSeo(() => post.value?.title[locale.value] ?? '404', () => post.value?.excerpt
       <article class="markdown-body" v-html="body"></article>
       <nav v-if="headings.length" class="article-toc desktop-toc" :aria-label="t.blog.toc"><strong>{{ t.blog.toc }}</strong><a v-for="heading in headings" :key="heading.id" :class="[`level-${heading.level}`, { active: activeHeading === heading.id }]" :href="`#${heading.id}`">{{ heading.text }}</a></nav>
     </div>
+    <PostComments v-if="post" :post-slug="post.slug" />
     <button v-if="showBackToTop" class="back-to-top" type="button" :aria-label="t.blog.backToTop" @click="backToTop"><ArrowUp :size="18" /></button>
   </section>
   <section v-else class="page shell not-found"><p class="eyebrow">{{ t.notFound.code }}</p><h1>{{ t.notFound.title }}</h1><RouterLink to="/essays" class="primary-button">{{ t.common.back }}</RouterLink></section>
