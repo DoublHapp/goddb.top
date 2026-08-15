@@ -8,6 +8,7 @@ import javascriptStudyNotesZh from './posts/javascript-study-notes.zh-CN.md?raw'
 import vueRendererEn from './posts/vue-rendering-notes.en.md?raw'
 import vueRendererZh from './posts/vue-rendering-notes.zh-CN.md?raw'
 import vueFrameworkNotesZh from './posts/vue-framework-study-notes.zh-CN.md?raw'
+import websiteMigrationZh from './posts/website-migration-to-self-hosted.zh-CN.md?raw'
 
 export const profile: Profile = {
   name: 'DB',
@@ -147,5 +148,19 @@ export const posts: Post[] = [
     publishedAt: '2026-06-28',
     readingTime: 6,
     content: { 'zh-CN': vueRendererZh, en: vueRendererEn },
+  },
+  {
+    slug: 'website-migration-to-self-hosted',
+    title: { 'zh-CN': '网站搬迁记：从 Vercel 到自建服务器', en: 'Moving the site to a self-hosted server' },
+    excerpt: {
+      'zh-CN': '从 Vercel 搬到自建服务器的完整记录：测速选型、Docker 化、HTTPS、安全加固与 GitHub Actions 自动部署，以及一路上踩过的坑。',
+      en: 'A full account of migrating from Vercel to a self-hosted server: testing, Dockerization, HTTPS, hardening, CI/CD, and the pitfalls along the way.',
+    },
+    kind: 'technical',
+    category: 'Deployment',
+    tags: ['Docker', 'Nginx', 'HTTPS', '服务器', 'CI/CD'],
+    publishedAt: '2026-08-15',
+    readingTime: 12,
+    content: { 'zh-CN': websiteMigrationZh },
   },
 ]
