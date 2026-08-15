@@ -34,7 +34,7 @@ jobs:
       - name: Write deploy key
         run: |
           echo "${{ secrets.GODDB_SSH_KEY_B64 }}" | base64 -d > "$GITHUB_WORKSPACE/goddb_deploy_key"
-          chmod 600 "$GITHUB_WORKSPACE/goddb_deploy_key"
+          chmod 644 "$GITHUB_WORKSPACE/goddb_deploy_key"
 
       - name: Deploy dist to server
         uses: appleboy/scp-action@v0.1.7
