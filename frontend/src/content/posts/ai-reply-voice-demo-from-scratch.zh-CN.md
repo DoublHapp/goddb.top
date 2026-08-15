@@ -41,7 +41,7 @@
 - **路线 A：从零生成。** 适合想学习“如何让 Agent 做项目”的读者。按第 2.1～2.4 节操作。
 - **路线 B：克隆成品。** 适合想先跑起来的读者。直接跳到第 2.5 节，仓库地址为 `https://github.com/DoublHapp/softvoice.git`。
 - 两条路线在“上传 GitHub”之前汇合。不要先生成一份项目，又把成品仓库克隆到同一个文件夹，否则文件会互相覆盖
-![药店销售 AI 回复工作台最终效果](/images/essays/ai-reply-voice-demo-from-scratch/S01-final-desktop.png)
+![药店销售 AI 回复工作台最终效果](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S01-final-desktop.png)
 
 > 截图中的姓名、聊天与健康信息均为虚构演示数据。
 
@@ -76,11 +76,11 @@
 - Agent 一直要求登录：完成账号验证，或换用其他编程 Agent。
 - 修改范围超出当前文件夹：拒绝授权，重新强调“只允许当前项目目录”。
 
-> ![Trae 下载页面](/images/essays/ai-reply-voice-demo-from-scratch/S02-trae-download.png)
+> ![Trae 下载页面](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S02-trae-download.png)
 
-> ![Trae 打开文件夹](/images/essays/ai-reply-voice-demo-from-scratch/S03-trae-open-folder.png)
+> ![Trae 打开文件夹](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S03-trae-open-folder.png)
 
-> ![Trae Agent 模式](/images/essays/ai-reply-voice-demo-from-scratch/S04-trae-agent.png)
+> ![Trae Agent 模式](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S04-trae-agent.png)
 
 ### 自接 API 时要懂的三件套
 
@@ -90,7 +90,7 @@
 
 笔者曾使用中转地址 `http://www.1314mc.net:1314/` 购买和调用模型，这是个人经历，**不是推荐、背书或安全担保**。它使用明文 HTTP，存在传输被窃听或篡改风险；中转服务还涉及稳定性、密钥托管、对话隐私、计费透明度和供应商合规问题。生产环境优先使用模型官方或可追责的可信 HTTPS 服务。不要因为本教程保留了这个地址就直接购买或上传真实顾客数据。
 
-> ![模型 API 配置页](/images/essays/ai-reply-voice-demo-from-scratch/S05-agent-api-settings.png)
+> ![模型 API 配置页](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S05-agent-api-settings.png)
 
 ## 1.2 Windows 基础工具
 
@@ -103,13 +103,13 @@ Node.js 是运行这个网页项目开发工具的“发动机”。当前成品
 3. 双击安装，保留“添加到 PATH”相关默认选项。
 4. 安装结束后，关闭所有旧 PowerShell 和 Trae 终端，再重新打开，环境变量才会刷新。
 
-> ![Node.js LTS 下载](/images/essays/ai-reply-voice-demo-from-scratch/S06-node-download.png)
+> ![Node.js LTS 下载](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S06-node-download.png)
 
 ### 1.2.2 安装 Git
 
 Git 是项目的“存档和版本历史工具”。从 Git for Windows 官方网站下载安装。安装向导大部分保持默认；默认编辑器不熟悉也没关系，本教程不会要求在终端编辑器里写代码。确保安装器允许在命令行使用 Git。
 
-> ![Git 安装](/images/essays/ai-reply-voice-demo-from-scratch/S07-git-install.png)
+> ![Git 安装](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S07-git-install.png)
 
 ### 1.2.3 打开 PowerShell 并检查版本(mac相关命令可直接搜索或者问AI)
 
@@ -135,7 +135,7 @@ git --version
 
 若提示“无法将……识别为 cmdlet、函数、脚本文件”：确认软件已安装，然后**关闭并重开 PowerShell**；仍失败时重启 Windows，再检查安装时是否加入 PATH。
 
-> ![PowerShell 版本检查](/images/essays/ai-reply-voice-demo-from-scratch/S08-version-check.png)
+> ![PowerShell 版本检查](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S08-version-check.png)
 
 ### 1.2.4 Git 首次署名
 
@@ -192,11 +192,11 @@ dist/
 
 `.env.example` 只能放变量名和假值，因此可保留；真实 `.env` 必须忽略。录音、生成的 MP3、顾客资料也不要放入仓库。
 
-> ![GitHub 注册登录](/images/essays/ai-reply-voice-demo-from-scratch/S09-github-signin.png)
+> ![GitHub 注册登录](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S09-github-signin.png)
 
-> ![创建 GitHub 仓库](/images/essays/ai-reply-voice-demo-from-scratch/S10-github-new-repo.png)
+> ![创建 GitHub 仓库](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S10-github-new-repo.png)
 
-> ![GitHub 空仓库](/images/essays/ai-reply-voice-demo-from-scratch/S11-github-empty-repo.png)
+> ![GitHub 空仓库](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S11-github-empty-repo.png)
 
 ## 1.4 Vercel：构建、托管和小型后端
 
@@ -217,9 +217,9 @@ Vercel 会从 GitHub 拉代码，执行构建，把 `dist` 网页放到公网，
 
 免费计划的额度、限制和适用条件会变化，以 Vercel 当前定价页为准。这个 Demo 没有登录，公开链接会让任何访问者消耗你的文字与语音 API 额度。
 
-> ![Vercel 登录](/images/essays/ai-reply-voice-demo-from-scratch/S12-vercel-login.png)
+> ![Vercel 登录](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S12-vercel-login.png)
 
-> ![Vercel 项目列表](/images/essays/ai-reply-voice-demo-from-scratch/S14-vercel-dashboard.png)
+> ![Vercel 项目列表](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S14-vercel-dashboard.png)
 
 ## 1.5 文字模型与语音模型 API
 
@@ -276,7 +276,7 @@ MiniMax 国际站与中国站的账号、域名和可用配置可能不同，不
 4. 创建后把 Key 放进本机 `.env` 或 Vercel 环境变量，不要放进聊天、代码、截图、GitHub Issue。
 5. 在账单页设置预算上限和告警；测试结束可撤销专用 Key。
 
-> ![MiniMax API Key](/images/essays/ai-reply-voice-demo-from-scratch/S17-minimax-key.png)
+> ![MiniMax API Key](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S17-minimax-key.png)
 
 ## 1.6 可选：NameSilo + Cloudflare 自定义域名
 
@@ -443,7 +443,7 @@ README.md
 
 缺少任何一项，先让 Agent 解释。`.env.example` 应只有变量名和假值，不能出现实际 Key。
 
-> ![项目文件树](/images/essays/ai-reply-voice-demo-from-scratch/S18-project-tree.png)
+> ![项目文件树](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S18-project-tree.png)
 
 ### 2.4.2 在正确目录打开 PowerShell
 
@@ -660,7 +660,7 @@ git push -u origin main
 
 GitHub 现在通常通过浏览器或凭据管理器认证，不要把账号密码、Personal Access Token 粘到教程、代码或 Agent 对话。
 
-> ![GitHub 项目文件](/images/essays/ai-reply-voice-demo-from-scratch/S25-github-files.png)
+> ![GitHub 项目文件](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S25-github-files.png)
 
 ### 常见 Git 错误
 
@@ -697,7 +697,7 @@ git push
 3. 在 GitHub 仓库列表找到项目，点击 `Import（导入）`。
 4. 找不到仓库时，点击调整 GitHub App 权限，授权这个仓库后刷新。
 
-> ![Vercel 导入仓库](/images/essays/ai-reply-voice-demo-from-scratch/S26-vercel-import.png)
+> ![Vercel 导入仓库](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S26-vercel-import.png)
 
 ### 2.7.2 构建参数
 
@@ -731,7 +731,7 @@ git push
 
 为 Production、Preview、Development 选择相应作用范围。Preview 也会调用上游、消耗额度，不应随意公开。不要创建 `VITE_OPENAI_API_KEY`、`VITE_MINIMAX_API_KEY`，`VITE_` 会把值暴露给浏览器。
 
-> ![Vercel 环境变量](/images/essays/ai-reply-voice-demo-from-scratch/S28-vercel-env-names.png)
+> ![Vercel 环境变量](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S28-vercel-env-names.png)
 
 ### 2.7.4 部署与状态
 
@@ -742,7 +742,7 @@ git push
 
 > ⚠️ 修改环境变量后，旧部署不会自动拥有新值。进入 `Deployments`，对最新正确代码点击 `Redeploy（重新部署）`，完成后再测试。
 
-> ![Vercel Ready](/images/essays/ai-reply-voice-demo-from-scratch/S29-vercel-ready.png)
+> ![Vercel Ready](https://media.goddb.top/images/essays/ai-reply-voice-demo-from-scratch/S29-vercel-ready.png)
 
 ### 2.7.5 线上验收和日志
 

@@ -186,6 +186,8 @@ cd /opt/goddb && git pull && cd frontend && npm ci && npm run build \
 
 **命名规范**：对象 key 用英文/拼音 + 短横线（如 `interview-notes.md`、`demo-2026.mp4`）。避免中文文件名（URL 需编码，兼容性差）。
 
+**随笔内容图片**（如 `ai-reply-voice-demo-from-scratch` 的 19 张截图）已迁移至 R2，key 前缀 `images/essays/...`，对应 URL `https://media.goddb.top/images/...`。新增内容图片按相同前缀上传 R2 后，在 Markdown 中直接引用 R2 绝对 URL，不再放入 `frontend/public/`。
+
 ### 上传方式
 
 **① 网页控制台**：Cloudflare → R2 → `goddb-media` → 上传文件（适合少量手动）
@@ -209,6 +211,13 @@ npx wrangler r2 object get goddb-media/<key> --file <保存路径>
 - R2 API Token：Cloudflare → R2 → Manage R2 API Tokens 创建（Access Key ID + Secret Access Key），密钥仅存服务器环境变量
 - S3 端点：`https://<account_id>.r2.cloudflarestorage.com`
 - 上传：`S3Client.putObject`；预签名下载：`S3Presigner.presignGetObject`
+
+**④ 本地零依赖脚本**（仓库内 `scripts/upload-r2.mjs`，纯 Node SigV4 签名，无需安装任何依赖）：
+
+```bash
+# 凭证写在仓库根目录 .env.r2.local（R2_ACCESS_KEY_ID / R2_SECRET_ACCESS_KEY，gitignore 已忽略）
+node scripts/upload-r2.mjs <本地文件> <对象key>   # 上传单个对象
+```
 
 ### 防盗链（WAF 自定义规则）
 
