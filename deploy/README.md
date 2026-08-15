@@ -174,6 +174,62 @@ cd /opt/goddb && git pull && cd frontend && npm ci && npm run build \
 4. nginx 统一入口：新增虚拟主机 `server_name <sub>.goddb.top`，各站点 `include` 配置
 5. redis / rabbitmq 等中间件可共用（部署在 `/opt/goddb/deploy`）
 
+## 媒体与文件存储（Cloudflare R2）
+
+视频/大文件不占用服务器磁盘与带宽，统一放对象存储（R2），经 CDN 分发。
+
+**当前配置（已就绪）**：
+- 存储桶：`goddb-media`（区域 APAC）
+- 自定义域名：`https://media.goddb.top/<key>`（Cloudflare 自动签 HTTPS）
+- 免费额度：10 GB 存储 + 出口流量免费（永久）；超出存储 $0.015/GB/月
+- 防盗链：WAF 自定义规则按 Referer 白名单（见下）
+
+**命名规范**：对象 key 用英文/拼音 + 短横线（如 `interview-notes.md`、`demo-2026.mp4`）。避免中文文件名（URL 需编码，兼容性差）。
+
+### 上传方式
+
+**① 网页控制台**：Cloudflare → R2 → `goddb-media` → 上传文件（适合少量手动）
+
+**② wrangler CLI**（本地命令行，批量/自动化）：
+
+```bash
+# 首次登录授权
+npx wrangler login
+
+# 上传
+npx wrangler r2 object put goddb-media/<key> --file <本地文件路径>
+
+# 列出/获取
+npx wrangler r2 object list goddb-media
+npx wrangler r2 object get goddb-media/<key> --file <保存路径>
+```
+
+**③ 后端 SDK（推荐，Spring Boot 上线后）**：R2 兼容 AWS S3 API，用 AWS SDK v2：
+
+- R2 API Token：Cloudflare → R2 → Manage R2 API Tokens 创建（Access Key ID + Secret Access Key），密钥仅存服务器环境变量
+- S3 端点：`https://<account_id>.r2.cloudflarestorage.com`
+- 上传：`S3Client.putObject`；预签名下载：`S3Presigner.presignGetObject`
+
+### 防盗链（WAF 自定义规则）
+
+Cloudflare → Security → WAF → Custom rules，表达式：
+
+```
+(http.host eq "media.goddb.top" and http.referer ne "" and not http.referer contains "goddb.top")
+```
+
+Action: Block。语义：媒体域名上，带非 goddb.top Referer 的请求 → 403（防网页盗链；空 Referer 放行，直接访问不受影响）。Referer 可伪造，只防普通盗链。
+
+### 授权访问（签名 URL，后端就绪后实现）
+
+对私密文件/付费内容，用预签名 URL（不可伪造、可设过期）：
+
+```
+浏览器 → 后端接口（校验登录）→ 后端用 R2 密钥实时签发 5~60 分钟有效的签名 URL → 浏览器访问 → 过期自动 403
+```
+
+要点：密钥只存后端；`S3Presigner` 生成带 `X-Amz-Signature` 与 `Expires` 的 URL；前端与用户接触不到任何密钥。
+
 ## 换服务器迁移 Checklist
 
 1. 备份服务器上 `/opt/goddb/deploy/`（含 `dist`、`certs`、`docker-compose.yml`、`nginx.conf`）
