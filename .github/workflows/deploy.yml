@@ -1,0 +1,42 @@
+# goddb.top 自动部署：push 到 main 后云端构建前端并上传到 VMISS 服务器
+name: Deploy goddb.top to VMISS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch: {}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        run: npm run build
+
+      - name: Deploy dist to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GODDB_SERVER_HOST }}
+          username: ${{ secrets.GODDB_SERVER_USER }}
+          key: ${{ secrets.GODDB_SSH_KEY }}
+          source: 'frontend/dist/*'
+          target: '/opt/goddb/deploy/dist/'
+          strip_components: 2
