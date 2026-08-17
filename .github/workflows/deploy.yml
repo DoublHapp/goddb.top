@@ -55,6 +55,7 @@ jobs:
         with:
           host: ${{ secrets.GODDB_SERVER_HOST }}
           username: ${{ secrets.GODDB_SERVER_USER }}
+          port: 2222
           key: |
             ${{ steps.decode_key.outputs.key }}
           source: 'frontend/dist/*'
@@ -86,6 +87,7 @@ jobs:
         with:
           host: ${{ secrets.GODDB_SERVER_HOST }}
           username: ${{ secrets.GODDB_SERVER_USER }}
+          port: 2222
           key: |
             ${{ steps.decode_key.outputs.key }}
           script: |
