@@ -1,0 +1,16 @@
+:root {
+  font-family: var(--font-sans);
+}
+
+.site-frame :where(code, kbd, samp, pre, .eyebrow, .nav-index, .panel-label, .status-badge) {
+  font-family: var(--font-mono);
+}
+
+.phantom-home :where(h1, h2, h3, .phantom-display), .phantom-overlay :where(h1, h2, h3, .phantom-display) {
+  font-family: var(--font-display);
+  font-stretch: condensed;
+}
+
+:lang(en) .phantom-home :where(h1, h2, h3, .phantom-display) {
+  text-wrap: balance;
+}

@@ -1,10 +1,7 @@
-@import './styles/playground.css';
-@import './styles/dbverse.css';
-
 body { transition: color .35s ease, background-color .35s ease; }
 body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px), radial-gradient(circle at 20% 5%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 28%), radial-gradient(circle at 86% 22%, color-mix(in srgb, var(--coral) 8%, transparent), transparent 24%); background-size: 48px 48px, 48px 48px, 100% 100%, 100% 100%; mask-image: linear-gradient(to bottom, black, transparent 84%); }
 body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 10; opacity: .025; background: repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 3px); }
-.shell { width: min(1160px, calc(100% - 48px)); margin-inline: auto; }
+.shell { width: min(var(--shell-width), calc(100% - var(--page-gutter))); margin-inline: auto; }
 .site-frame { min-height: 100vh; display: flex; flex-direction: column; }
 .site-frame main { flex: 1; }
 .accent { color: var(--accent); }

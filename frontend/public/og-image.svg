@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">DB SAMA · 思考停止区</title>
+  <desc id="description">goddb.top 的红黑纸张风格品牌分享图</desc>
+  <rect width="1200" height="630" fill="#f2ecd6"/>
+  <path fill="#e62724" d="M0 0h1200v34L0 76Z"/>
+  <path fill="#0a0909" d="m768 0 432 0v630H685l63-96-40-111 72-109-48-124 65-91Z"/>
+  <path fill="#e62724" d="m846 119 286 25-21 287-280-27Z"/>
+  <path fill="#f2ecd6" stroke="#0a0909" stroke-width="14" d="m869 254 31-72 102 11 28 55-39 68-108 10Zm159-2 28-57 97-8 20 68-31 70-101-11Z"/>
+  <path fill="#0a0909" d="M909 210h40c34 0 55 19 55 45s-21 45-55 45h-40Zm27 23v44h13c17 0 27-8 27-22s-10-22-27-22Zm126-22h38c30 0 46 12 46 33 0 11-5 19-14 24 12 4 18 13 18 27 0 21-18 33-50 33h-38Zm27 22v26h13c12 0 18-4 18-13 0-8-6-13-18-13Zm0 46v28h15c14 0 21-5 21-14s-7-14-21-14Z"/>
+  <path fill="#f2d22d" d="m806 470 356 31-9 61-363-32Z"/>
+  <g fill="#0a0909" font-family="Arial Black, Arial, sans-serif">
+    <text x="72" y="190" font-size="30" font-weight="700" letter-spacing="5">GODDB.TOP / ACT 00</text>
+    <text x="68" y="318" font-size="92" font-weight="900" letter-spacing="-7">DB SAMA</text>
+    <text x="72" y="405" font-size="62" font-weight="900" letter-spacing="-4">思考停止区</text>
+  </g>
+  <path fill="#0a0909" d="M72 445h530v8H72Z"/>
+  <text x="72" y="505" fill="#625d54" font-family="Arial, sans-serif" font-size="28" font-weight="700">小工具、随笔，以及不肯安静的脑洞。</text>
+  <text x="72" y="565" fill="#e62724" font-family="Consolas, monospace" font-size="22" font-weight="700" letter-spacing="3">BREAK THE LAYOUT → START EXPLORING</text>
+</svg>

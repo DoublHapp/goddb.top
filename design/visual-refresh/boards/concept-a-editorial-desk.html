@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A 稿：编辑台 / Editorial Desk</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;800;900&display=swap');
+    :root { --paper: #f2eedf; --paper-2: #e6e0cf; --ink: #11100e; --muted: #706c62; --red: #e3312d; --line: #292722; --night: #141311; --yellow: #f1cc2e; }
+    * { box-sizing: border-box; }
+    html { background: #cbc5b5; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: 'Noto Sans SC', sans-serif; }
+    button, a { color: inherit; font: inherit; }
+    a { text-decoration: none; }
+    .board { width: 1440px; min-height: 2520px; margin: 0 auto; overflow: hidden; background: var(--paper); box-shadow: 0 0 80px #736e62; }
+    .meta-bar { display: flex; justify-content: space-between; align-items: center; height: 42px; padding: 0 42px; color: var(--paper); background: var(--ink); font: 500 11px 'IBM Plex Mono'; letter-spacing: .08em; }
+    .site-header { display: grid; grid-template-columns: 220px 1fr auto; align-items: center; height: 86px; padding: 0 42px; border-bottom: 2px solid var(--ink); }
+    .brand { display: flex; align-items: center; gap: 13px; font: 900 16px 'Noto Sans SC'; }
+    .db-mark { position: relative; display: grid; width: 52px; height: 52px; place-items: center; overflow: hidden; color: var(--paper); background: var(--ink); font: 400 22px 'Archivo Black'; letter-spacing: -.12em; transform: skew(-7deg); }
+    .db-mark::after { content: ''; position: absolute; right: -7px; bottom: -2px; width: 27px; height: 9px; background: var(--red); transform: rotate(-16deg); }
+    .brand small { display: block; color: var(--muted); font: 500 9px 'IBM Plex Mono'; letter-spacing: .1em; }
+    .nav { display: flex; justify-content: center; gap: 34px; font: 600 12px 'IBM Plex Mono'; }
+    .nav a:first-child { padding-bottom: 7px; border-bottom: 3px solid var(--red); }
+    .utilities { display: flex; gap: 9px; }
+    .chip { padding: 8px 10px; border: 1px solid var(--ink); background: transparent; font: 600 10px 'IBM Plex Mono'; }
+    .hero { position: relative; display: grid; grid-template-columns: 1.45fr .55fr; min-height: 650px; padding: 64px 42px 42px; border-bottom: 2px solid var(--ink); }
+    .hero-copy { position: relative; z-index: 2; padding-right: 40px; }
+    .issue { display: flex; gap: 16px; align-items: center; margin-bottom: 42px; font: 600 11px 'IBM Plex Mono'; letter-spacing: .08em; }
+    .issue span { padding: 6px 10px; color: var(--paper); background: var(--red); }
+    h1 { max-width: 920px; margin: 0; font-size: 92px; font-weight: 900; line-height: .98; letter-spacing: -.085em; }
+    h1 em { position: relative; color: var(--red); font-style: normal; }
+    h1 em::after { content: ''; position: absolute; right: -16px; bottom: 11px; left: 4px; z-index: -1; height: 10px; background: var(--ink); transform: rotate(-2deg); }
+    .hero-intro { max-width: 640px; margin: 34px 0; font-size: 17px; line-height: 1.9; }
+    .cta { display: inline-flex; align-items: center; gap: 38px; padding: 15px 20px; color: var(--paper); background: var(--ink); font: 700 12px 'IBM Plex Mono'; clip-path: polygon(0 0, 96% 0, 100% 50%, 96% 100%, 0 100%); }
+    .cta b { color: var(--red); font-size: 17px; }
+    .hero-side { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 20px 0 0 30px; border-left: 1px solid var(--ink); }
+    .watermark { position: absolute; top: 38px; right: -60px; color: transparent; font: 240px/.8 'Archivo Black'; letter-spacing: -.16em; -webkit-text-stroke: 2px var(--ink); transform: rotate(90deg); opacity: .17; }
+    .manifesto { position: relative; z-index: 1; margin-top: 220px; padding: 24px; border: 1px solid var(--ink); background: var(--paper); box-shadow: 10px 10px 0 var(--red); transform: rotate(1.2deg); }
+    .manifesto strong { display: block; margin-bottom: 14px; font: 17px 'Archivo Black'; }
+    .manifesto p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+    .page-no { align-self: flex-end; font: 11px 'IBM Plex Mono'; }
+    .section { padding: 58px 42px; border-bottom: 2px solid var(--ink); }
+    .section-head { display: grid; grid-template-columns: 90px 1fr auto; align-items: end; margin-bottom: 30px; }
+    .section-head span { color: var(--red); font: 600 12px 'IBM Plex Mono'; }
+    .section-head h2 { margin: 0; font-size: 34px; line-height: 1; letter-spacing: -.06em; }
+    .section-head small { font: 10px 'IBM Plex Mono'; }
+    .channels { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
+    .channel { position: relative; min-height: 260px; padding: 20px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .channel:nth-child(2) { color: var(--paper); background: var(--ink); }
+    .channel:nth-child(2) .channel-meta, .channel:nth-child(2) p { color: #bbb5a6; }
+    .channel-meta { display: flex; justify-content: space-between; color: var(--muted); font: 10px 'IBM Plex Mono'; }
+    .channel h3 { margin: 78px 0 12px; font-size: 26px; letter-spacing: -.05em; }
+    .channel p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .channel-arrow { position: absolute; right: 18px; bottom: 15px; color: var(--red); font: 24px 'IBM Plex Mono'; }
+    .stories { display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; }
+    .story-list { border-top: 2px solid var(--ink); }
+    .story { display: grid; grid-template-columns: 110px 1fr 28px; gap: 20px; align-items: center; min-height: 128px; border-bottom: 1px solid var(--ink); }
+    .story time, .story small { color: var(--muted); font: 10px 'IBM Plex Mono'; }
+    .story h3 { margin: 7px 0; font-size: 19px; letter-spacing: -.03em; }
+    .story b { color: var(--red); }
+    .universe { position: relative; min-height: 386px; padding: 28px; overflow: hidden; color: var(--paper); background: var(--night); }
+    .universe::before { content: ''; position: absolute; inset: 0; opacity: .22; background-image: radial-gradient(circle at 20% 30%, #fff 0 1px, transparent 2px), radial-gradient(circle at 75% 22%, #fff 0 1px, transparent 2px), radial-gradient(circle at 60% 75%, #fff 0 1px, transparent 2px); background-size: 70px 70px, 110px 110px, 90px 90px; }
+    .orbit { position: absolute; right: -65px; bottom: -65px; width: 310px; height: 310px; border: 1px solid #706b61; border-radius: 50%; }
+    .orbit::before { content: ''; position: absolute; inset: 38px; border: 1px solid var(--red); border-radius: 50%; }
+    .orbit::after { content: ''; position: absolute; top: 67px; left: 36px; width: 28px; height: 28px; background: var(--red); border-radius: 50%; box-shadow: 70px 120px 0 var(--yellow); }
+    .universe > * { position: relative; z-index: 1; }
+    .universe small { font: 10px 'IBM Plex Mono'; letter-spacing: .1em; }
+    .universe h3 { max-width: 360px; margin: 78px 0 16px; font-size: 38px; line-height: 1.05; }
+    .universe p { max-width: 350px; color: #bbb5a6; font-size: 12px; }
+    .mobile-area { display: grid; grid-template-columns: 1fr 380px; gap: 54px; align-items: center; min-height: 600px; padding: 58px 90px; background: var(--paper-2); }
+    .mobile-copy h2 { margin: 12px 0 20px; font-size: 48px; line-height: 1.05; letter-spacing: -.06em; }
+    .mobile-copy p { max-width: 500px; color: var(--muted); line-height: 1.8; }
+    .phone { width: 320px; height: 520px; margin: auto; padding: 12px; border: 3px solid var(--ink); border-radius: 30px; background: var(--ink); box-shadow: 18px 22px 0 var(--red); transform: rotate(2deg); }
+    .phone-screen { height: 100%; overflow: hidden; border-radius: 20px; background: var(--paper); }
+    .phone-head { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--ink); font: 10px 'IBM Plex Mono'; }
+    .phone-mark { font: 20px 'Archivo Black'; }
+    .phone-main { padding: 34px 18px; }
+    .phone-main small { color: var(--red); font: 9px 'IBM Plex Mono'; }
+    .phone-main h3 { margin: 18px 0; font-size: 39px; line-height: .98; letter-spacing: -.07em; }
+    .phone-main p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+    .phone-nav { display: grid; margin-top: 28px; border-top: 1px solid var(--ink); }
+    .phone-nav span { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--ink); font-size: 12px; }
+    .system { display: grid; grid-template-columns: 1.2fr .8fr .8fr; min-height: 280px; color: var(--paper); background: var(--night); }
+    .system > div { padding: 38px 42px; border-right: 1px solid #49463f; }
+    .system h3 { margin: 0 0 22px; font-size: 24px; }
+    .palette { display: flex; gap: 12px; }
+    .swatch { width: 62px; height: 62px; border: 1px solid #888278; }
+    .swatch:nth-child(1) { background: var(--paper); }.swatch:nth-child(2) { background: var(--ink); }.swatch:nth-child(3) { background: var(--red); }.swatch:nth-child(4) { background: var(--yellow); }
+    .type-sample b { display: block; font: 30px 'Archivo Black'; }.type-sample span { font: 700 20px 'Noto Sans SC'; }.type-sample small { display: block; margin-top: 10px; color: #aaa497; font: 10px 'IBM Plex Mono'; }
+    .motion-frames { display: flex; gap: 8px; }.frame { display: grid; width: 75px; height: 52px; place-items: center; border: 1px solid #777168; font: 9px 'IBM Plex Mono'; }.frame:nth-child(2) { color: var(--paper); background: var(--red); transform: skew(-7deg); }
+    @media (max-width: 700px) { .board { width: 100%; min-height: 100vh; }.meta-bar { padding: 0 18px; }.site-header { grid-template-columns: 1fr auto; height: 70px; padding: 0 18px; }.nav { display: none; }.brand > span { display: none; }.hero { grid-template-columns: 1fr; min-height: 690px; padding: 38px 18px; }.hero-side { display: none; } h1 { font-size: 52px; }.hero-intro { font-size: 14px; }.section { padding: 45px 18px; }.channels { grid-template-columns: 1fr 1fr; }.stories { grid-template-columns: 1fr; }.story { grid-template-columns: 72px 1fr; }.universe { min-height: 330px; }.mobile-area { display: block; padding: 50px 18px 80px; }.mobile-copy { margin-bottom: 45px; }.system { grid-template-columns: 1fr; }.system > div { border-bottom: 1px solid #49463f; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <div class="meta-bar"><span>CONCEPT A · EDITORIAL DESK · RESTRAINT 72%</span><span>GODDB.TOP / VISUAL REFRESH 01</span></div>
+    <header class="site-header">
+      <a class="brand" href="#"><span class="db-mark">DB</span><span>goddb.top<small>THINKING-FREE EDITION</small></span></a>
+      <nav class="nav"><a href="#">00 首页</a><a href="#">01 随笔</a><a href="#">02 DB宇宙</a><a href="#">03 作品</a><a href="#">04 关于</a></nav>
+      <div class="utilities"><button class="chip">静音</button><button class="chip">中 / EN</button></div>
+    </header>
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="issue"><span>ISSUE 00</span><b>DB SAMA / 思考停止区</b></div>
+        <h1>认真不是<br>访问本站的<em>前置条件</em>。</h1>
+        <p class="hero-intro">这里有一些替身般的小工具，还有 DB 没想明白就先写下来的随笔。偶尔也会打开一条通往游戏、动漫与旧日热血的世界线。</p>
+        <a class="cta" href="#channels">开始探索 <b>→</b></a>
+      </div>
+      <aside class="hero-side"><span class="watermark">DB</span><div class="manifesto"><strong>MAKE ODD THINGS<br>WITH A STRAIGHT FACE.</strong><p>冷静地整理脑内噪音，再顽皮地打乱一次。结构负责可信，意外负责让人记住。</p></div><span class="page-no">PAGE 001 / 006</span></aside>
+    </section>
+    <section id="channels" class="section">
+      <header class="section-head"><span>01 / 频道</span><h2>从哪里停止思考？</h2><small>SELECT A WORLDLINE ↘</small></header>
+      <div class="channels">
+        <article class="channel"><div class="channel-meta"><span>ESSAYS</span><span>06 ITEMS</span></div><h3>没想明白的随笔</h3><p>技术、迁移与脑洞的长期存档。</p><span class="channel-arrow">→</span></article>
+        <article class="channel"><div class="channel-meta"><span>DBVERSE</span><span>02 SIGNALS</span></div><h3>DB 宇宙</h3><p>游戏、动漫与仍在轨道上的热血记忆。</p><span class="channel-arrow">→</span></article>
+        <article class="channel"><div class="channel-meta"><span>PROJECTS</span><span>03 FILES</span></div><h3>怪东西陈列柜</h3><p>做过的，和还没做完的。</p><span class="channel-arrow">→</span></article>
+        <article class="channel"><div class="channel-meta"><span>TOOLS</span><span>BUILDING</span></div><h3>替身工坊</h3><p>正在搓。暂不伪装成已经上线。</p><span class="channel-arrow">…</span></article>
+      </div>
+    </section>
+    <section class="section">
+      <header class="section-head"><span>02 / 最新</span><h2>刚刚截获的信号</h2><small>ALL FIELD NOTES ↗</small></header>
+      <div class="stories">
+        <div class="story-list">
+          <article class="story"><time>2026<br>08.15</time><div><small>DEPLOYMENT · 12 MIN</small><h3>网站搬迁记：从 Vercel 到自建服务器</h3></div><b>↗</b></article>
+          <article class="story"><time>2026<br>07.20</time><div><small>AI DEMO · 43 MIN</small><h3>零基础搭建 AI 回复语音 Demo</h3></div><b>↗</b></article>
+          <article class="story"><time>2026<br>07.12</time><div><small>ARCHITECTURE · 5 MIN</small><h3>为长期维护设计内容系统</h3></div><b>↗</b></article>
+        </div>
+        <aside class="universe"><small>03 / DBVERSE · LIVE SIGNAL</small><h3>热血记忆<br>仍在轨道上回响。</h3><p>只狼赤蚀星域与火影查克拉蓝星域，等待你选择一条世界线。</p><div class="orbit"></div></aside>
+      </div>
+    </section>
+    <section class="mobile-area">
+      <div class="mobile-copy"><small>MOBILE DIRECTION / LIGHTWEIGHT</small><h2>同一份人格，<br>更轻的动作。</h2><p>移动端保留纸张、黑线、红色行动层与频道叙事；去除指针跟随和持续视差，以按压揭示与短促换版替代。</p></div>
+      <div class="phone"><div class="phone-screen"><div class="phone-head"><span class="phone-mark">DB</span><span>静音 · 菜单</span></div><div class="phone-main"><small>DB SAMA / 思考停止区</small><h3>认真不是<br>前置条件。</h3><p>选择一条频道，看看 DB 又留下了什么。</p><div class="phone-nav"><span>没想明白的随笔 <b>06</b></span><span>DB 宇宙 <b>02</b></span><span>怪东西陈列柜 <b>03</b></span></div></div></div></div>
+    </section>
+    <section class="system">
+      <div><h3>COLOR / 浅色主场</h3><div class="palette"><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span></div></div>
+      <div class="type-sample"><h3>TYPE / 字体</h3><b>ARCHIVO BLACK</b><span>思考停止区</span><small>IBM PLEX MONO / META</small></div>
+      <div><h3>MOTION / 纸张抽出</h3><div class="motion-frames"><span class="frame">IDLE</span><span class="frame">PULL</span><span class="frame">LOCK</span></div><p style="color:#aaa497;font-size:11px">L2 章节反馈 · reduced motion 改为淡入</p></div>
+    </section>
+  </main>
+</body>
+</html>

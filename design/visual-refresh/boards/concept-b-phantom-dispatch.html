@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B 稿：怪盗通讯 / Phantom Dispatch</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;600;800;900&display=swap');
+    :root { --paper:#f5f0db; --ink:#0d0d0c; --red:#e72b27; --yellow:#f3d12d; --grey:#cbc5b4; --muted:#68645a; --night:#171511; --mint:#5fd0b5; }
+    * { box-sizing:border-box; }
+    html { background:#211f1b; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:'Noto Sans SC',sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    button { color:inherit; font:inherit; }
+    .board { position:relative; width:1440px; min-height:2600px; margin:auto; overflow:hidden; background:var(--paper); box-shadow:0 0 80px #050505; }
+    .board::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.035; background-image:radial-gradient(var(--ink) .7px,transparent .8px); background-size:5px 5px; }
+    .top-signal { position:relative; z-index:3; display:flex; justify-content:space-between; height:36px; padding:0 38px; align-items:center; color:var(--paper); background:var(--red); font:600 10px 'IBM Plex Mono'; letter-spacing:.12em; }
+    .header { position:relative; z-index:3; display:grid; grid-template-columns:210px 1fr auto; align-items:center; height:92px; padding:0 38px; color:var(--paper); background:var(--ink); clip-path:polygon(0 0,100% 0,100% 78%,72% 100%,0 84%); }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:900; }
+    .mark { position:relative; display:grid; width:58px; height:50px; place-items:center; color:var(--paper); background:var(--red); font:24px 'Archivo Black'; letter-spacing:-.14em; clip-path:polygon(7% 0,100% 9%,88% 100%,0 82%); }
+    .mark::after { content:'!'; position:absolute; right:-8px; bottom:-13px; color:var(--yellow); font-size:25px; transform:rotate(12deg); }
+    .brand small { display:block; color:#a7a397; font:9px 'IBM Plex Mono'; letter-spacing:.1em; }
+    nav { display:flex; justify-content:center; gap:9px; }
+    nav a { padding:10px 15px; font:600 11px 'IBM Plex Mono'; transform:skew(-10deg); }
+    nav a span { display:block; transform:skew(10deg); }
+    nav a:first-child { color:var(--ink); background:var(--yellow); }
+    .tools { display:flex; gap:8px; }.tool { padding:8px 11px; border:1px solid #5f5b52; background:transparent; font:10px 'IBM Plex Mono'; }
+    .hero { position:relative; min-height:690px; padding:86px 52px 50px; overflow:hidden; }
+    .hero::before { content:''; position:absolute; top:75px; right:-180px; width:720px; height:460px; background:var(--red); clip-path:polygon(15% 8%,100% 0,92% 88%,0 100%,10% 48%); transform:rotate(-3deg); }
+    .hero::after { content:''; position:absolute; top:125px; right:-70px; width:560px; height:390px; border:3px solid var(--ink); clip-path:polygon(15% 8%,100% 0,92% 88%,0 100%,10% 48%); transform:rotate(4deg); }
+    .hero-copy { position:relative; z-index:2; width:900px; }
+    .kicker { display:inline-flex; align-items:center; gap:14px; padding:8px 12px; background:var(--yellow); font:600 11px 'IBM Plex Mono'; transform:rotate(-1deg); box-shadow:6px 6px 0 var(--ink); }
+    h1 { margin:35px 0 25px; font-size:104px; font-weight:900; line-height:.91; letter-spacing:-.09em; text-transform:uppercase; }
+    h1 span { display:inline-block; padding:0 18px 10px 8px; color:var(--paper); background:var(--ink); transform:rotate(-1.5deg); clip-path:polygon(0 3%,100% 0,96% 100%,3% 93%); }
+    .intro { width:610px; margin:28px 0; font-size:16px; line-height:1.9; }
+    .action-row { display:flex; align-items:center; gap:22px; }
+    .cta { display:inline-flex; gap:44px; align-items:center; padding:16px 22px; color:var(--paper); background:var(--red); font:700 12px 'IBM Plex Mono'; box-shadow:8px 8px 0 var(--ink); clip-path:polygon(0 0,94% 0,100% 50%,94% 100%,0 100%,4% 50%); }
+    .sound-note { color:var(--muted); font:10px 'IBM Plex Mono'; }
+    .hero-mark { position:absolute; z-index:1; top:135px; right:-6px; color:var(--ink); font:230px/.75 'Archivo Black'; letter-spacing:-.17em; transform:rotate(-8deg); }
+    .hero-mark small { position:absolute; right:80px; bottom:-58px; color:var(--yellow); font:22px 'IBM Plex Mono'; letter-spacing:0; transform:rotate(8deg); }
+    .ticker { position:absolute; right:-20px; bottom:45px; left:-20px; z-index:2; display:flex; justify-content:center; gap:30px; padding:11px; color:var(--paper); background:var(--ink); font:600 11px 'IBM Plex Mono'; transform:rotate(-1.5deg); }
+    .ticker b { color:var(--yellow); }
+    .section { position:relative; padding:70px 50px; }
+    .section-title { display:flex; justify-content:space-between; align-items:end; margin-bottom:34px; }
+    .section-title div { display:flex; gap:18px; align-items:center; }
+    .number { display:grid; width:52px; height:52px; place-items:center; color:var(--paper); background:var(--red); font:19px 'Archivo Black'; transform:rotate(-5deg); }
+    .section-title h2 { margin:0; font-size:39px; letter-spacing:-.065em; }
+    .section-title small { font:10px 'IBM Plex Mono'; }
+    .channels { display:grid; grid-template-columns:1.15fr .85fr .85fr; grid-template-rows:245px 245px; gap:18px; }
+    .card { position:relative; padding:25px; overflow:hidden; border:2px solid var(--ink); background:#fbf7e8; box-shadow:8px 8px 0 var(--ink); }
+    .card:first-child { grid-row:1 / 3; color:var(--paper); background:var(--ink); transform:rotate(-.7deg); }
+    .card:nth-child(2) { background:var(--yellow); transform:rotate(1deg); }
+    .card:nth-child(3) { transform:rotate(-.8deg); }.card:nth-child(4) { grid-column:2 / 4; background:var(--grey); transform:rotate(.4deg); }
+    .card-head { display:flex; justify-content:space-between; font:10px 'IBM Plex Mono'; }
+    .card h3 { margin:65px 0 12px; font-size:28px; line-height:1.1; letter-spacing:-.05em; }
+    .card:first-child h3 { margin-top:220px; font-size:45px; }.card:nth-child(4) h3 { margin-top:58px; }
+    .card p { max-width:410px; margin:0; color:var(--muted); font-size:12px; line-height:1.7; }.card:first-child p { color:#aaa598; }
+    .card-arrow { position:absolute; right:22px; bottom:16px; font:30px 'Archivo Black'; }.card:first-child .card-arrow { color:var(--red); }
+    .stamp { position:absolute; top:94px; right:28px; padding:9px 12px; border:3px solid var(--red); color:var(--red); font:700 12px 'IBM Plex Mono'; transform:rotate(11deg); }
+    .ink-swipe { position:absolute; top:105px; left:-15px; width:380px; height:95px; background:var(--red); clip-path:polygon(0 20%,93% 0,100% 65%,4% 100%); }
+    .latest { color:var(--paper); background:var(--night); clip-path:polygon(0 3%,100% 0,100% 97%,0 100%); }
+    .latest .number { color:var(--ink); background:var(--yellow); }.latest .section-title small { color:#9f9a8d; }
+    .latest-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:26px; }
+    .dispatches { border-top:1px solid #625e55; }
+    .dispatch { display:grid; grid-template-columns:90px 1fr auto; gap:20px; min-height:133px; align-items:center; border-bottom:1px solid #625e55; }
+    .dispatch time,.dispatch small { color:#9f9a8d; font:10px 'IBM Plex Mono'; }.dispatch h3 { margin:7px 0; font-size:20px; }.dispatch b { color:var(--yellow); }
+    .portal { position:relative; min-height:420px; padding:30px; overflow:hidden; color:var(--ink); background:var(--red); clip-path:polygon(4% 0,100% 5%,96% 100%,0 94%); }
+    .portal::before { content:''; position:absolute; inset:-20px; background:repeating-conic-gradient(from 15deg at 76% 60%,var(--ink) 0 2deg,transparent 2deg 10deg); opacity:.22; }
+    .planet { position:absolute; right:75px; bottom:35px; width:210px; height:210px; border:20px solid var(--ink); border-radius:50%; box-shadow:0 0 0 2px var(--paper),0 0 0 52px rgba(13,13,12,.12); }
+    .planet::after { content:''; position:absolute; top:70px; left:-80px; width:330px; height:20px; border:6px solid var(--yellow); border-radius:50%; transform:rotate(-16deg); }
+    .portal > * { position:relative; z-index:1; }.portal small { font:700 10px 'IBM Plex Mono'; }.portal h3 { max-width:370px; margin:65px 0 15px; color:var(--paper); font-size:45px; line-height:1; }.portal p { max-width:350px; font-size:12px; line-height:1.7; }
+    .mobile-area { display:grid; grid-template-columns:400px 1fr; gap:70px; min-height:620px; align-items:center; padding:70px 120px; }
+    .phone { width:320px; height:540px; padding:10px; border:4px solid var(--ink); border-radius:30px; background:var(--red); box-shadow:-16px 18px 0 var(--ink); transform:rotate(-2deg); }
+    .screen { height:100%; overflow:hidden; border-radius:19px; background:var(--paper); }
+    .phone-head { display:flex; justify-content:space-between; align-items:center; padding:15px 17px; color:var(--paper); background:var(--ink); font:10px 'IBM Plex Mono'; }
+    .phone-db { color:var(--yellow); font:20px 'Archivo Black'; letter-spacing:-.1em; }
+    .phone-copy { padding:28px 19px; }.phone-copy small { color:var(--red); font:700 9px 'IBM Plex Mono'; }.phone-copy h3 { margin:18px 0; font-size:42px; line-height:.94; letter-spacing:-.075em; }.phone-copy h3 span { color:var(--paper); background:var(--ink); }.phone-copy p { color:var(--muted); font-size:11px; line-height:1.7; }
+    .phone-channels { display:grid; gap:7px; margin-top:24px; }.phone-channels span { display:flex; justify-content:space-between; padding:10px 12px; border:1px solid var(--ink); font-size:11px; box-shadow:3px 3px 0 var(--ink); }.phone-channels span:nth-child(2) { background:var(--yellow); }
+    .mobile-copy small { font:600 10px 'IBM Plex Mono'; }.mobile-copy h2 { margin:15px 0; font-size:55px; line-height:1; letter-spacing:-.07em; }.mobile-copy h2 em { color:var(--red); font-style:normal; }.mobile-copy p { max-width:550px; color:var(--muted); line-height:1.8; }
+    .system { display:grid; grid-template-columns:1fr 1fr 1fr; min-height:295px; color:var(--paper); background:var(--ink); }
+    .system > div { padding:38px 42px; border-right:1px solid #4d4941; }.system h3 { margin:0 0 22px; font-size:23px; }
+    .palette { display:flex; gap:10px; }.swatch { width:62px; height:62px; border:1px solid #6f695e; }.swatch:nth-child(1){background:var(--paper)}.swatch:nth-child(2){background:var(--ink)}.swatch:nth-child(3){background:var(--red)}.swatch:nth-child(4){background:var(--yellow)}
+    .type b { display:block; font:29px 'Archivo Black'; }.type span { display:block; font:800 20px 'Noto Sans SC'; }.type small { color:#9f9a8d; font:10px 'IBM Plex Mono'; }
+    .frames { display:flex; gap:8px; }.frame { display:grid; width:78px; height:52px; place-items:center; border:1px solid #706b62; font:9px 'IBM Plex Mono'; }.frame:nth-child(2){color:var(--ink);background:var(--yellow);transform:skew(-10deg)}.frame:nth-child(3){background:var(--red);clip-path:polygon(0 0,100% 10%,92% 100%,5% 88%)}
+    @media(max-width:700px){.board{width:100%;min-height:100vh}.top-signal{padding:0 15px}.header{grid-template-columns:1fr auto;height:78px;padding:0 16px}.brand>span{display:none}nav{display:none}.hero{min-height:720px;padding:70px 18px 40px}.hero::before{top:350px;right:-290px}.hero-copy{width:auto}h1{font-size:57px}.intro{width:auto;font-size:14px}.hero-mark{top:420px;right:-20px;font-size:130px}.ticker{font-size:8px}.section{padding:60px 18px}.channels{grid-template-columns:1fr;grid-template-rows:auto}.card,.card:first-child,.card:nth-child(4){grid-column:auto;grid-row:auto;min-height:230px}.card:first-child h3{margin-top:80px}.ink-swipe{display:none}.latest{clip-path:none}.latest-grid{grid-template-columns:1fr}.dispatch{grid-template-columns:70px 1fr}.portal{min-height:360px}.mobile-area{display:block;padding:70px 18px}.phone{margin:0 auto 70px}.system{grid-template-columns:1fr}.system>div{border-bottom:1px solid #4d4941}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="board">
+    <div class="top-signal"><span>CONCEPT B · PHANTOM DISPATCH · BALANCE 50/40/10</span><span>DEFAULT RECOMMENDATION</span></div>
+    <header class="header"><a class="brand" href="#"><b class="mark">DB</b><span>goddb.top<small>ODD SIGNALS / ISSUE 00</small></span></a><nav><a href="#"><span>00 首页</span></a><a href="#"><span>01 随笔</span></a><a href="#"><span>02 DB宇宙</span></a><a href="#"><span>03 作品</span></a><a href="#"><span>04 关于</span></a></nav><div class="tools"><button class="tool">静音</button><button class="tool">中 / EN</button></div></header>
+    <section class="hero"><div class="hero-copy"><div class="kicker">DB SAMA / 思考停止区 <b>● LIVE</b></div><h1>认真不是<br><span>访问本站的</span><br>前置条件。</h1><p class="intro">这里有一些替身般的小工具，还有 DB 没想明白就先写下来的随笔。放心，严肃与正确答案都不负责检票。</p><div class="action-row"><a class="cta" href="#channels">选择一条世界线 <b>→</b></a><span class="sound-note">声音默认关闭 · 可主动开启</span></div></div><div class="hero-mark">DB<small>KEEP IT ODD.</small></div><div class="ticker"><span>✦ ESSAYS / 06</span><b>✦ DBVERSE / 02 SIGNALS</b><span>✦ PROJECTS / 03</span><span>✦ TOOLS / BUILDING</span></div></section>
+    <section id="channels" class="section"><header class="section-title"><div><b class="number">01</b><h2>选择你的频道</h2></div><small>MISSION SELECT / EXPLORE THE SITE ↘</small></header><div class="channels"><article class="card"><div class="card-head"><span>CHANNEL / ESSAYS</span><span>06 FILES</span></div><div class="ink-swipe"></div><h3>没想明白的<br>随笔</h3><p>技术、迁移、学习存档，以及写下来之后才慢慢想明白的东西。</p><span class="card-arrow">→</span></article><article class="card"><div class="card-head"><span>CHANNEL / DBVERSE</span><span>02 SIGNALS</span></div><h3>DB 宇宙</h3><p>热血记忆仍在轨道上回响。</p><span class="card-arrow">→</span></article><article class="card"><div class="card-head"><span>CHANNEL / PROJECTS</span><span>03 FILES</span></div><h3>怪东西陈列柜</h3><p>做过的，和还没做完的。</p><span class="card-arrow">→</span></article><article class="card"><div class="card-head"><span>CHANNEL / TOOLS</span><span>UNDER CONSTRUCTION</span></div><span class="stamp">正在搓</span><h3>替身工坊尚未开放</h3><p>不为空栏目编造内容。先去其他频道转转，回来时也许会多出一个奇怪工具。</p><span class="card-arrow">…</span></article></div></section>
+    <section class="section latest"><header class="section-title"><div><b class="number">02</b><h2>刚刚截获的信号</h2></div><small>LATEST DISPATCHES / ALL NOTES ↗</small></header><div class="latest-grid"><div class="dispatches"><article class="dispatch"><time>08.15<br>2026</time><div><small>DEPLOYMENT · 12 MIN</small><h3>网站搬迁记：从 Vercel 到自建服务器</h3></div><b>↗</b></article><article class="dispatch"><time>07.20<br>2026</time><div><small>AI DEMO · 43 MIN</small><h3>零基础搭建 AI 回复语音 Demo</h3></div><b>↗</b></article><article class="dispatch"><time>07.12<br>2026</time><div><small>ARCHITECTURE · 5 MIN</small><h3>为长期维护设计内容系统</h3></div><b>↗</b></article></div><aside class="portal"><small>03 / DBVERSE · EVENT ENTRY</small><h3>选择星域，<br>重播一次热血。</h3><p>只狼赤蚀星域与火影查克拉蓝星域已接入信号。</p><div class="planet"></div></aside></div></section>
+    <section class="mobile-area"><div class="phone"><div class="screen"><div class="phone-head"><span class="phone-db">DB</span><span>静音 · MENU</span></div><div class="phone-copy"><small>DB SAMA / 思考停止区</small><h3>认真不是<br><span>前置条件。</span></h3><p>按下一个频道，换一张版面。</p><div class="phone-channels"><span>没想明白的随笔 <b>06</b></span><span>DB 宇宙 <b>02</b></span><span>怪东西陈列柜 <b>03</b></span></div></div></div></div><div class="mobile-copy"><small>MOBILE / SHORT & TACTILE</small><h2>斜切保留，<br><em>重力减半。</em></h2><p>桌面端的错位、遮罩和章节换版，在移动端改写为按压揭示、短促色块切换与单列任务选择。不使用持续视差、3D 倾斜或自动声音。</p></div></section>
+    <section class="system"><div><h3>COLOR / 行动与发现</h3><div class="palette"><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span><span class="swatch"></span></div></div><div class="type"><h3>TYPE / 冷静又顽皮</h3><b>PHANTOM DISPATCH</b><span>怪盗通讯</span><small>IBM PLEX MONO / SYSTEM STATE</small></div><div><h3>MOTION / 换版擦除</h3><div class="frames"><span class="frame">AIM</span><span class="frame">WIPE</span><span class="frame">LOCK</span></div><p style="color:#9f9a8d;font-size:11px">L2 章节反馈 · L3 仅入口事件触发</p></div></section>
+  </main>
+</body>
+</html>

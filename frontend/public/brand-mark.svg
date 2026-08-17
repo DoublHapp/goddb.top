@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">DB 双眼品牌标识</title>
+  <desc id="description">红色斜切方块中的原创 D 与 B 几何双眼</desc>
+  <path fill="#e62724" d="M43 26 486 61 456 486 27 447Z"/>
+  <path fill="#0a0909" d="m63 231 54-112 139 17 34 83-61 101-145 9Z"/>
+  <path fill="#f2ecd6" d="m78 225 48-87 116 14 29 65-51 82-122 10Z"/>
+  <path fill="#0a0909" d="m277 219 42-81 137-13 31 93-45 104-146-13Z"/>
+  <path fill="#f2ecd6" d="m296 216 35-60 111-11 24 72-35 84-118-10Z"/>
+  <path fill="#0a0909" d="M133 169h52c45 0 73 25 73 60s-28 60-73 60h-52Zm36 31v58h17c23 0 36-10 36-29s-13-29-36-29Z"/>
+  <path fill="#0a0909" d="M337 164h52c39 0 61 17 61 45 0 14-6 25-18 32 16 6 24 18 24 36 0 29-23 44-66 44h-53Zm35 29v35h18c17 0 25-6 25-18 0-11-8-17-25-17Zm0 61v38h20c19 0 28-6 28-19 0-12-9-19-28-19Z"/>
+  <path fill="none" stroke="#f2d22d" stroke-linecap="square" stroke-width="12" d="m67 200 55-105 140 17M316 113l149-14 28 90"/>
+</svg>

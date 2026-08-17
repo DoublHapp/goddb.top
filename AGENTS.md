@@ -67,6 +67,10 @@ deploy/
 scripts/upload-r2.mjs          # Cloudflare R2 媒体上传（零依赖 SigV4）
 ```
 
+首页采用“替身头版”结构：`PhantomIntro` 负责原创裂屏开场，`PhantomEyeMark` 提供收束后的常驻 DB 双眼标识，`PhantomHero` 承载品牌主视觉，随后由频道格、最新内容和任务面板组织整站入口。相关双语文案集中在 `locales/messages.ts` 的 `home.phantom`、`home.opening`、`home.sound` 与 `home.eyeMark`；修改任一语言时必须同步另一语言并保持递归键结构一致。
+
+开场同一标签页会话只自动播放一次，允许眼标或重播控件手动重播，并支持跳过与 Escape；声音默认关闭并持久化选择，提示音仅使用 Web Audio 即时合成。`prefers-reduced-motion: reduce` 下必须保留完整内容，以静态定格和淡入替代裂屏运动。眼标、开场视觉及声音均须使用原创或明确授权资产，不得复制第三方角色、Logo、字体、原声或解包资源。
+
 ## 4. 常用命令
 
 ```bash

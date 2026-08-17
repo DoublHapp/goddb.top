@@ -3,6 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import SiteFooter from '@/components/SiteFooter.vue'
 import SiteHeader from '@/components/SiteHeader.vue'
+import PhantomIntro from '@/components/PhantomIntro.vue'
 
 const route = useRoute()
 const isDbverseRoute = computed(() => route.path.startsWith('/dbverse'))
@@ -59,6 +60,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="site-frame" :class="{ 'site-frame--dbverse': isDbverseRoute }">
+    <PhantomIntro v-if="!isDbverseRoute" />
     <div v-if="!isDbverseRoute" ref="cursorGlow" class="cursor-glow" aria-hidden="true"></div>
     <SiteHeader />
     <main>

@@ -22,6 +22,7 @@ npm run build
 - 项目与档案数据：`src/content/index.ts`
 - 中英文本地化：`src/locales/messages.ts`
 - 页面：`src/pages/`
+- 新首页组件：`src/components/PhantomIntro.vue`、`PhantomEyeMark.vue`、`PhantomHero.vue`、`ChannelGrid.vue`、`LatestDispatches.vue` 与 `MissionPanel.vue`
 - 主题和全局交互：`src/composables/` 与 `src/style.css`
 - SEO 基础：`index.html`、`public/sitemap.xml` 与 `public/robots.txt`
 
@@ -35,7 +36,9 @@ Markdown 由 `marked` 解析并经 `DOMPurify` 白名单清洗，不允许绕过
 
 每项工具在 `subdomain` 字段声明独立子域名，主站 `/tools/:slug` 提供目录与详情入口。收藏和最近访问分别保存到 `goddb:favourite-tools` 与 `goddb:recent-tools`，读取与写入仅接受工具数据中存在的 slug。
 
-Canvas 在桌面端绘制 70 个节点、移动端绘制 28 个节点，设备像素比最高取 2。页面不可见时暂停动画；系统启用 reduced motion 时保留静态画面，不启动连续帧循环。
+首页采用“替身头版”信息结构：原创裂屏开场将 D/B 几何瞳孔收束为常驻 DB 双眼标识，随后依次展示品牌主视觉、随笔/DB宇宙/项目频道格、本期真实内容与频道任务面板。首页、开场、声音及眼标文案统一维护在 `messages.ts` 的 `home.phantom`、`home.opening`、`home.sound` 与 `home.eyeMark`，中英文键必须保持一致。
+
+开场同一标签页会话只自动播放一次，可通过眼标或重播按钮再次播放，并支持点击跳过和 Escape。声音首次访问默认关闭，选择持久化到本地；低动态模式保留全部内容，以静态双眼定格和淡入替代裂屏运动。原创眼标、开场与提示音不得使用或仿制第三方角色、Logo、字体、原声或解包资产。
 
 ## 部署
 
