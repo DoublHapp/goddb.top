@@ -23,6 +23,8 @@ npm run build
 - 中英文本地化：`src/locales/messages.ts`
 - 页面：`src/pages/`
 - 新首页组件：`src/components/PhantomIntro.vue`、`PhantomEyeMark.vue`、`PhantomHero.vue`、`ChannelGrid.vue`、`LatestDispatches.vue` 与 `MissionPanel.vue`
+- 普通页面原语：`src/components/PhantomPageLead.vue`、`PhantomFilterBar.vue`、`PhantomDetailHeader.vue` 与 `PhantomEmptyState.vue`
+- 普通内页与阅读器样式：`src/styles/phantom-pages.css`、`src/styles/phantom-reader.css`；DB宇宙继续由 `src/styles/dbverse.css` 保持独立视觉
 - 主题和全局交互：`src/composables/` 与 `src/style.css`
 - SEO 基础：`index.html`、`public/sitemap.xml` 与 `public/robots.txt`
 

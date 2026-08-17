@@ -3,6 +3,7 @@ import { CheckCircle2, Github } from 'lucide-vue-next'
 import { profile } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
+import PhantomPageLead from '@/components/PhantomPageLead.vue'
 
 const { locale, t } = useLocale()
 useSeo(() => t.value.nav.about, () => t.value.about.bio, '/about')
@@ -10,8 +11,7 @@ useSeo(() => t.value.nav.about, () => t.value.about.bio, '/about')
 
 <template>
   <section class="page shell">
-    <p class="eyebrow">{{ t.about.eyebrow }}</p>
-    <div class="page-lead split-lead"><h1>{{ t.about.title }}</h1><p>{{ t.about.bio }}</p></div>
+    <PhantomPageLead index="04" :eyebrow="t.about.eyebrow" :title="t.about.title" :description="t.about.bio" />
     <div class="about-grid">
       <article class="profile-block">
         <span class="panel-label">// {{ t.about.identity }}</span>

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ArrowLeft, ArrowUp, Check, Copy, Link2 } from 'lucide-vue-next'
 import { computed, createApp, h, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -7,6 +7,7 @@ import { posts } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
 import { renderMarkdownDocument } from '@/lib/markdown'
+import PhantomEmptyState from '@/components/PhantomEmptyState.vue'
 
 const route = useRoute()
 const { locale, t } = useLocale()
@@ -113,7 +114,7 @@ useSeo(() => post.value?.title[locale.value] ?? '404', () => post.value?.excerpt
   <section v-if="post" ref="article" class="page shell article-page">
     <div class="reading-progress" aria-hidden="true"><span :style="{ transform: `scaleX(${progress / 100})` }"></span></div>
     <RouterLink to="/essays" class="back-link"><ArrowLeft :size="16" />{{ t.common.back }}</RouterLink>
-    <header class="article-header"><div class="post-meta"><span>{{ t.blog.kinds[post.kind] }}</span><span>{{ post.category }}</span><time :datetime="post.publishedAt">{{ post.publishedAt }}</time><span>{{ post.readingTime }} {{ t.common.min }}</span></div><h1>{{ post.title[locale] }}</h1><p>{{ post.excerpt[locale] }}</p><div class="article-footer"><div class="post-tags"><span v-for="tag in post.tags" :key="tag">#{{ tag }}</span></div><button class="copy-link" type="button" @click="copyLink"><Check v-if="linkCopied" :size="15" /><Link2 v-else :size="15" />{{ linkCopyFailed ? t.common.copyFailed : linkCopied ? t.common.linkCopied : t.common.copyLink }}</button></div></header>
+    <header class="article-header" data-reveal><p class="panel-label">// EDITORIAL FILE / {{ post.publishedAt.split('-').join('') }}</p><div class="post-meta"><span>{{ t.blog.kinds[post.kind] }}</span><span>{{ post.category }}</span><time :datetime="post.publishedAt">{{ post.publishedAt }}</time><span>{{ post.readingTime }} {{ t.common.min }}</span></div><h1>{{ post.title[locale] }}</h1><p>{{ post.excerpt[locale] }}</p><div class="article-footer"><div class="post-tags"><span v-for="tag in post.tags" :key="tag">#{{ tag }}</span></div><button class="copy-link" type="button" @click="copyLink"><Check v-if="linkCopied" :size="15" /><Link2 v-else :size="15" />{{ linkCopyFailed ? t.common.copyFailed : linkCopied ? t.common.linkCopied : t.common.copyLink }}</button></div></header>
     <aside v-if="post.learningArchive" class="learning-archive-notice"><strong>{{ t.blog.archiveTitle }}</strong><span>{{ t.blog.archiveNotice }}</span></aside>
     <p v-if="fallback" class="language-fallback">{{ t.blog.chineseFallback }}</p>
     <details v-if="headings.length" class="article-toc mobile-toc"><summary>{{ t.blog.toc }}</summary><a v-for="heading in headings" :key="heading.id" :class="[`level-${heading.level}`, { active: activeHeading === heading.id }]" :href="`#${heading.id}`">{{ heading.text }}</a></details>
@@ -124,5 +125,5 @@ useSeo(() => post.value?.title[locale.value] ?? '404', () => post.value?.excerpt
     <PostComments v-if="post" :post-slug="post.slug" />
     <button v-if="showBackToTop" class="back-to-top" type="button" :aria-label="t.blog.backToTop" @click="backToTop"><ArrowUp :size="18" /></button>
   </section>
-  <section v-else class="page shell not-found"><p class="eyebrow">{{ t.notFound.code }}</p><h1>{{ t.notFound.title }}</h1><RouterLink to="/essays" class="primary-button">{{ t.common.back }}</RouterLink></section>
+  <section v-else class="page shell not-found"><PhantomEmptyState :code="t.notFound.code" :title="t.notFound.title" :action="t.common.back" to="/essays" /></section>
 </template>

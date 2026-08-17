@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Search, X } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ProjectCard from '@/components/ProjectCard.vue'
 import { projects } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
+import PhantomPageLead from '@/components/PhantomPageLead.vue'
+import PhantomFilterBar from '@/components/PhantomFilterBar.vue'
+import PhantomEmptyState from '@/components/PhantomEmptyState.vue'
 
 const { locale, t } = useLocale()
 const statuses = ['all', 'online', 'building', 'archived'] as const
@@ -44,16 +46,9 @@ useSeo(() => t.value.nav.projects, () => t.value.projects.subtitle, '/projects')
 
 <template>
   <section class="page shell">
-    <p class="eyebrow">{{ t.projects.eyebrow }}</p>
-    <div class="page-lead"><h1>{{ t.projects.title }}<span class="accent">.</span></h1><p>{{ t.projects.subtitle }}</p></div>
-    <div class="filter-workbench">
-      <label class="search-field"><Search :size="17" /><span class="sr-only">{{ t.projects.search }}</span><input v-model="query" type="search" :placeholder="t.projects.search"></label>
-      <div class="filter-chips" :aria-label="t.projects.filter">
-        <button v-for="item in statuses" :key="item" type="button" :class="{ active: status === item }" @click="status = item">{{ t.projects[item] }}</button>
-      </div>
-      <button v-if="query || status !== 'all'" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button>
-    </div>
+    <PhantomPageLead index="02" :eyebrow="t.projects.eyebrow" :title="t.projects.title" :description="t.projects.subtitle" :count="`${projects.length} FILES`" />
+    <PhantomFilterBar :search="query" :placeholder="t.projects.search" :filter-label="t.projects.filter" :options="statuses.map((item) => ({ value: item, label: t.projects[item] }))" :active="status" :clear-label="t.common.clear" @update:search="query = $event" @select="status = $event as Status" @clear="clearFilters" />
     <TransitionGroup v-if="filteredProjects.length" name="card-list" tag="div" class="project-grid archive-grid"><ProjectCard v-for="project in filteredProjects" :key="project.slug" :project="project" /></TransitionGroup>
-    <div v-else class="empty-state"><Search :size="24" /><p>{{ t.projects.empty }}</p><button type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+    <PhantomEmptyState v-else code="NO FILE MATCH" :title="t.projects.empty" :action="t.common.clear" @action="clearFilters" />
   </section>
 </template>

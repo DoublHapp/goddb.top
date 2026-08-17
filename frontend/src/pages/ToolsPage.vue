@@ -6,6 +6,8 @@ import ToolCard from '@/components/ToolCard.vue'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
 import { useToolLibrary } from '@/composables/useToolLibrary'
+import PhantomPageLead from '@/components/PhantomPageLead.vue'
+import PhantomEmptyState from '@/components/PhantomEmptyState.vue'
 
 const { locale, t } = useLocale()
 const { tools, categories, favorites, recent, clearRecent } = useToolLibrary()
@@ -27,16 +29,18 @@ useSeo(() => t.value.nav.tools, () => t.value.tools.subtitle, '/tools')
 
 <template>
   <section class="page shell">
-    <p class="eyebrow">{{ t.tools.eyebrow }}</p>
-    <div class="page-lead"><h1>{{ t.tools.title }}<span class="accent">.</span></h1><p>{{ t.tools.subtitle }}</p></div>
-    <label class="search-field tool-search"><Search :size="17" /><span class="sr-only">{{ t.tools.search }}</span><input v-model="query" type="search" :placeholder="t.tools.search"></label>
-    <div class="filter-workbench tool-filters"><div class="filter-chips"><button v-for="item in categories" :key="item" type="button" :class="{ active: category === item }" @click="category = item">{{ t.tools.categories[item] }}</button></div><div class="filter-chips"><button v-for="item in ['all', 'favorites', 'recent'] as const" :key="item" type="button" :class="{ active: filter === item }" @click="filter = item">{{ t.tools.filters[item] }}</button></div><button v-if="hasFilters" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button></div>
-    <section v-if="!hasFilters && recentTools.length" class="recent-tools">
-      <div class="tool-section-heading"><h2>{{ t.tools.recentTitle }}</h2><button type="button" @click="clearRecent"><X :size="14" />{{ t.tools.clearRecent }}</button></div>
-      <div class="tool-grid"><ToolCard v-for="tool in recentTools" :key="tool.slug" :tool="tool" /></div>
-    </section>
-    <div class="log-count">{{ t.tools.resultsLabel }} <span>{{ String(filteredTools.length).padStart(2, '0') }} {{ t.tools.results }}</span></div>
-    <div v-if="filteredTools.length" class="tool-grid"><ToolCard v-for="tool in filteredTools" :key="tool.slug" :tool="tool" /></div>
-    <div v-else class="empty-state"><Search :size="24" /><p>{{ t.tools.empty }}</p><button v-if="hasFilters" type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+    <PhantomPageLead index="03" :eyebrow="t.tools.eyebrow" :title="t.tools.title" :description="t.tools.subtitle" :count="`${tools.length} TOOLS`" />
+    <PhantomEmptyState v-if="!tools.length" code="WORKBENCH / BUILDING" :title="t.tools.empty" :description="t.tools.subtitle" />
+    <template v-else>
+      <label class="search-field tool-search"><Search :size="17" /><span class="sr-only">{{ t.tools.search }}</span><input v-model="query" type="search" :placeholder="t.tools.search"></label>
+      <div class="filter-workbench tool-filters"><div class="filter-chips"><button v-for="item in categories" :key="item" type="button" :class="{ active: category === item }" @click="category = item">{{ t.tools.categories[item] }}</button></div><div class="filter-chips"><button v-for="item in ['all', 'favorites', 'recent'] as const" :key="item" type="button" :class="{ active: filter === item }" @click="filter = item">{{ t.tools.filters[item] }}</button></div><button v-if="hasFilters" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button></div>
+      <section v-if="!hasFilters && recentTools.length" class="recent-tools">
+        <div class="tool-section-heading"><h2>{{ t.tools.recentTitle }}</h2><button type="button" @click="clearRecent"><X :size="14" />{{ t.tools.clearRecent }}</button></div>
+        <div class="tool-grid"><ToolCard v-for="tool in recentTools" :key="tool.slug" :tool="tool" /></div>
+      </section>
+      <div class="log-count">{{ t.tools.resultsLabel }} <span>{{ String(filteredTools.length).padStart(2, '0') }} {{ t.tools.results }}</span></div>
+      <div v-if="filteredTools.length" class="tool-grid"><ToolCard v-for="tool in filteredTools" :key="tool.slug" :tool="tool" /></div>
+      <div v-else class="empty-state"><Search :size="24" /><p>{{ t.tools.empty }}</p><button v-if="hasFilters" type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+    </template>
   </section>
 </template>

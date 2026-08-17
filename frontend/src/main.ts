@@ -9,6 +9,8 @@ import './styles/comments.css'
 import './styles/brand.css'
 import './styles/phantom-home.css'
 import './styles/phantom-overlays.css'
+import './styles/phantom-pages.css'
+import './styles/phantom-reader.css'
 import App from './App.vue'
 import router from './router'
 

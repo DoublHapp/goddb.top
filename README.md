@@ -55,6 +55,8 @@ npm run build
 
 网站首页以原创 DB 双眼标识和“替身头版”组织入口：裂屏品牌开场之后依次呈现主视觉、随笔/DB宇宙/项目频道格、本期真实内容与频道任务面板。首页、开场、声音及眼标的双语文案位于 `frontend/src/locales/messages.ts` 的 `home.phantom`、`home.opening`、`home.sound` 与 `home.eyeMark`，两种语言必须保持相同键结构。
 
+普通内页沿用同源的“怪盗编辑部”视觉体系：About 是人物档案，Projects 是任务档案墙，Essays 是稿件索引，Tools 在没有真实工具时明确展示建设中空态，文章详情使用强调可读性的编辑部阅读工作台。共享页面原语位于 `frontend/src/components/PhantomPage*.vue`，普通页面与阅读器样式分别位于 `frontend/src/styles/phantom-pages.css` 和 `phantom-reader.css`。DB宇宙继续保持独立的深空 Three.js 视觉壳。
+
 网站以 Tools 与 Essays 组织主要公开内容，并以 DB宇宙展示游戏、小说、动漫、剪辑、合法资源和吐槽等兴趣成分。Tools 数据位于 `frontend/src/content/tools.ts`，公开路由为 `/tools`；每项工具通过 `subdomain` 声明独立子域名，主站保留 `/tools/:slug` 目录详情入口。Essays 正文位于 `frontend/src/content/posts/`，公开路由为 `/essays`。DB宇宙元数据位于 `frontend/src/content/dbverse.ts`，Markdown 位于 `frontend/src/content/dbverse/`，公开路由为 `/dbverse`。项目与个人档案数据位于 `frontend/src/content/index.ts`，其余本地化界面文案同样位于 `frontend/src/locales/messages.ts`。
 
 新增工具或文章时同步维护 `frontend/public/sitemap.xml`。公开内容可以替换和扩展，但不要提交平台令牌、私钥或其他敏感信息。

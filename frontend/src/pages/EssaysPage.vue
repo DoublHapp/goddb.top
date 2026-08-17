@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Search, X } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PostRow from '@/components/PostRow.vue'
@@ -7,6 +6,9 @@ import { posts } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
 import type { PostKind } from '@/types/content'
+import PhantomPageLead from '@/components/PhantomPageLead.vue'
+import PhantomFilterBar from '@/components/PhantomFilterBar.vue'
+import PhantomEmptyState from '@/components/PhantomEmptyState.vue'
 
 const { locale, t } = useLocale()
 const kinds = ['all', 'daily', 'inspiration', 'technical'] as const
@@ -47,15 +49,10 @@ useSeo(() => t.value.nav.blog, () => t.value.blog.subtitle, '/essays')
 
 <template>
   <section class="page shell">
-    <p class="eyebrow">{{ t.blog.eyebrow }}</p>
-    <div class="page-lead"><h1>{{ t.blog.title }}<span class="accent">.</span></h1><p>{{ t.blog.subtitle }}</p></div>
-    <div class="filter-workbench">
-      <label class="search-field"><Search :size="17" /><span class="sr-only">{{ t.blog.search }}</span><input v-model="query" type="search" :placeholder="t.blog.search"></label>
-      <div class="filter-chips" :aria-label="t.blog.filter"><button v-for="item in kinds" :key="item" type="button" :class="{ active: kind === item }" @click="kind = item">{{ kindLabel(item) }}</button></div>
-      <button v-if="query || kind !== 'all'" class="clear-filter" type="button" @click="clearFilters"><X :size="15" />{{ t.common.clear }}</button>
-    </div>
+    <PhantomPageLead index="01" :eyebrow="t.blog.eyebrow" :title="t.blog.title" :description="t.blog.subtitle" :count="`${posts.length} FILES`" />
+    <PhantomFilterBar :search="query" :placeholder="t.blog.search" :filter-label="t.blog.filter" :options="kinds.map((item) => ({ value: item, label: kindLabel(item) }))" :active="kind" :clear-label="t.common.clear" @update:search="query = $event" @select="kind = $event as Kind" @clear="clearFilters" />
     <div class="log-count">{{ t.blog.all }} <span>{{ String(filteredPosts.length).padStart(2, '0') }} {{ t.blog.results }}</span></div>
     <TransitionGroup v-if="filteredPosts.length" name="row-list" tag="div" class="post-list"><PostRow v-for="post in filteredPosts" :key="post.slug" :post="post" /></TransitionGroup>
-    <div v-else class="empty-state"><Search :size="24" /><p>{{ t.blog.empty }}</p><button type="button" @click="clearFilters">{{ t.common.clear }}</button></div>
+    <PhantomEmptyState v-else code="NO DISPATCH FOUND" :title="t.blog.empty" :action="t.common.clear" @action="clearFilters" />
   </section>
 </template>

@@ -39,7 +39,7 @@ const draw = () => {
   if (!context || !canvas.value || !frame.value) return
   const { width, height } = frame.value.getBoundingClientRect()
   context.clearRect(0, 0, width, height)
-  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#8b7cf6'
+  const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#e62724'
   const coral = getComputedStyle(document.documentElement).getPropertyValue('--coral').trim() || '#ff8b7b'
 
   nodes.forEach((node) => {

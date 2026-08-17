@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ArrowLeft, ExternalLink, Github } from 'lucide-vue-next'
+import { ExternalLink, Github } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { projects } from '@/content'
 import { useLocale } from '@/composables/useLocale'
 import { useSeo } from '@/composables/useSeo'
+import PhantomDetailHeader from '@/components/PhantomDetailHeader.vue'
+import PhantomEmptyState from '@/components/PhantomEmptyState.vue'
 
 const route = useRoute()
 const { locale, t } = useLocale()
@@ -14,9 +16,8 @@ useSeo(() => project.value?.title ?? '404', () => project.value?.summary[locale.
 
 <template>
   <section v-if="project" class="page shell detail-page">
-    <RouterLink to="/projects" class="back-link"><ArrowLeft :size="16" />{{ t.common.back }}</RouterLink>
-    <div class="detail-header"><div><p class="eyebrow">{{ project.sequence }} / {{ project.status }}</p><h1>{{ project.title }}</h1></div><div class="detail-actions"><a v-if="project.repository" :href="project.repository" target="_blank" rel="noreferrer"><Github :size="17" />{{ t.common.repo }}</a><a v-if="project.demo" :href="project.demo" target="_blank" rel="noreferrer"><ExternalLink :size="17" />{{ t.common.demo }}</a></div></div>
+    <PhantomDetailHeader back-to="/projects" :back-label="t.common.back" :eyebrow="`${project.sequence} / ${project.status}`" :title="project.title"><template #actions><a v-if="project.repository" :href="project.repository" target="_blank" rel="noreferrer"><Github :size="17" />{{ t.common.repo }}</a><a v-if="project.demo" :href="project.demo" target="_blank" rel="noreferrer"><ExternalLink :size="17" />{{ t.common.demo }}</a></template></PhantomDetailHeader>
     <div class="detail-grid"><article><span class="panel-label">// {{ t.projects.overview }}</span><p class="detail-description">{{ project.description[locale] }}</p></article><aside><span class="panel-label">// {{ t.projects.stack }}</span><ul class="protocol-list"><li v-for="(item, index) in project.stack" :key="item"><span>0{{ index + 1 }}</span>{{ item }}</li></ul></aside></div>
   </section>
-  <section v-else class="page shell not-found"><p class="eyebrow">{{ t.notFound.code }}</p><h1>{{ t.notFound.title }}</h1><RouterLink to="/projects" class="primary-button">{{ t.common.back }}</RouterLink></section>
+  <section v-else class="page shell not-found"><PhantomEmptyState :code="t.notFound.code" :title="t.notFound.title" :action="t.common.back" to="/projects" /></section>
 </template>

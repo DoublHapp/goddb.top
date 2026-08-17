@@ -26,7 +26,7 @@ const hideCursorGlow = () => cursorGlow.value?.classList.remove('is-active')
 const bindReveals = async () => {
   await nextTick()
   observer?.disconnect()
-  const elements = document.querySelectorAll<HTMLElement>('.page-lead, .section-heading, .project-card, .post-row, .signal-panel, .about-grid > *, .detail-grid > *, .article-header, .markdown-body > *')
+  const elements = document.querySelectorAll<HTMLElement>('[data-reveal], .page-lead, .section-heading, .project-card, .post-row, .signal-panel, .about-grid > *, .detail-grid > *, .article-header, .markdown-body > *')
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     elements.forEach((element) => element.classList.add('is-visible'))
     return
